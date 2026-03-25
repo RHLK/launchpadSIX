@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--color-mission-bg);
+  color: var(--color-mission-ink);
+}
+
+/* Custom Scrollbar for Mission Control Look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-mission-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-mission-line);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mission-accent);
+}
+
+/* Global Transitions */
+* {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
