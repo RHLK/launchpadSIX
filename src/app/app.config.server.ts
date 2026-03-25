@@ -1,18 +1,10 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-} from '@angular/core';
-import {provideRouter} from '@angular/router';
-import {provideHttpClient} from '@angular/common/http';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {ApplicationConfig, mergeApplicationConfig} from '@angular/core';
+import {provideServerRendering, withRoutes} from '@angular/ssr';
+import {appConfig} from './app.config';
+import {serverRoutes} from './app.routes.server';
 
-import {routes} from './app.routes';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
-    provideHttpClient(),
-    provideAnimationsAsync(),
-  ],
+const serverConfig: ApplicationConfig = {
+  providers: [provideServerRendering(withRoutes(serverRoutes))],
 };
+
+export const config = mergeApplicationConfig(appConfig, serverConfig);
