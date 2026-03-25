@@ -15,3 +15,6 @@ npm-debug.log
 # IDEs and editors
 .idea/
 
+
+# Other
+/.angular/cache
