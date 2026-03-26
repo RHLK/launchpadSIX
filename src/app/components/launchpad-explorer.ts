@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule  } from '@angular/common';
 import { Launchpad } from '../model/launchpad.model';
 import { Launchpads } from '../services/launchpads';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -69,7 +69,7 @@ import { FormsModule } from '@angular/forms';
           </div>
         }
 
-          <ag-grid-angular
+          <!--ag-grid-angular
             class="ag-theme-quartz-dark w-full h-full rounded-xl overflow-hidden border border-mission-line"
             [rowData]="launchpadService.launchpads()"
             [columnDefs]="colDefs"
@@ -78,7 +78,7 @@ import { FormsModule } from '@angular/forms';
             [paginationPageSizeSelector]="false"
             (gridReady)="onGridReady($event)"
           >
-          </ag-grid-angular>
+          </ag-grid-angular-->
         
       </div>
     </div>
@@ -170,14 +170,14 @@ export class LaunchpadExplorer {
   constructor() {
     console.log('LaunchpadExplorer: Fetching launchpads...');
     this.launchpadService.getLaunchpads().subscribe({
-      next: (data) => {
-        console.log('LaunchpadExplorer: Received data:', data);
+      next: (data: Launchpad[]) => {
+        //console.log('LaunchpadExplorer: Received data:', data);
         if (this.gridApi) {
           console.log('LaunchpadExplorer: Setting rowData manually on data arrival');
           this.gridApi.setGridOption('rowData', [...data]);
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('LaunchpadExplorer: Error fetching data:', err);
       }
     });

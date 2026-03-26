@@ -26,8 +26,8 @@ export class Launchpads {
    * */
 lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches.length, 0));
   successRate = computed(() => {
-    const total = this.launchpads().reduce((acc, l) => acc + l.launch_attempts, 0);
-    const success = this.launchpads().reduce((acc, l) => acc + l.launch_successes, 0);
+    const total = this.launchpads().reduce((acc: number, l: Launchpad) => acc + l.launch_attempts, 0);
+    const success = this.launchpads().reduce((acc: number, l:Launchpad) => acc + l.launch_successes, 0);
     return total > 0 ? Math.round((success / total) * 100) : 0;
   });
 
@@ -38,7 +38,7 @@ lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches
   getLaunchpads(): Observable<Launchpad[]> {
     this.loading.set(true);
     return this.http.get<Launchpad[]>(`${this.baseUrl}/launchpads`).pipe(
-      tap(data => {
+      tap((data: any) => {
         this.launchpads.set(data);
         this.loading.set(false);
       })
