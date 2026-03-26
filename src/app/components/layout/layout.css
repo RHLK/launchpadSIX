@@ -1,0 +1,67 @@
+
+/* Layout Component Classes */
+@layer components {
+  /* Header Classes */
+  .mission-header {
+    @apply border-b border-mission-line bg-mission-bg/80 backdrop-blur-md sticky top-0 z-50;
+  }
+  .mission-header-container {
+    @apply max-w-7xl mx-auto px-4 h-16 flex items-center justify-between;
+  }
+  .mission-logo-container {
+    @apply flex items-center gap-3;
+  }
+  .mission-logo-icon-wrapper {
+    @apply bg-mission-accent/10 p-2 rounded-lg border border-mission-accent/20;
+  }
+  .mission-logo-icon {
+    @apply text-mission-accent;
+  }
+  .mission-title {
+    @apply font-display font-bold text-lg tracking-tight leading-none;
+  }
+  .mission-subtitle {
+    @apply font-mono text-[10px] uppercase tracking-widest text-mission-ink/40;
+  }
+  .mission-nav {
+    @apply hidden md:flex items-center gap-6;
+  }
+  .mission-nav-link {
+    @apply text-xs font-mono uppercase tracking-widest text-mission-ink/40 hover:text-mission-ink transition-colors;
+  }
+  .mission-nav-link-active {
+    @apply text-mission-accent border-b border-mission-accent pb-1;
+  }
+
+  /* Footer Classes */
+  .mission-footer {
+    @apply border-t border-mission-line bg-mission-line/5 py-8 mt-auto;
+  }
+  .mission-footer-container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+  .mission-stat-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-8 mb-8;
+  }
+  .mission-stat-item {
+    @apply flex flex-col gap-1;
+  }
+  .mission-stat-label {
+    @apply text-[10px] font-mono uppercase tracking-widest text-mission-ink/40;
+  }
+  .mission-stat-value {
+    @apply text-2xl font-display font-bold;
+  }
+  .mission-footer-bottom {
+    @apply flex flex-col md:flex-row items-center justify-between pt-8 border-t border-mission-line gap-4;
+  }
+  .mission-footer-copy {
+    @apply text-[10px] font-mono text-mission-ink/20 uppercase tracking-widest;
+  }
+  .mission-footer-links {
+    @apply flex items-center gap-6;
+  }
+  .mission-footer-link {
+    @apply text-[10px] font-mono text-mission-ink/20 hover:text-mission-accent transition-colors uppercase tracking-widest underline underline-offset-4;
+  }
+}
