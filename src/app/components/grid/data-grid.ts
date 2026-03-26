@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, input, output, inject, PLATFORM_ID 
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AllCommunityModule, ColDef, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
+import { SetFilterModule } from 'ag-grid-enterprise';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
-ModuleRegistry.registerModules([ AllCommunityModule ]);
+ModuleRegistry.registerModules([ AllCommunityModule, SetFilterModule]);
 /**
  * Shared Data Grid Component
  * A reusable wrapper for AG Grid with built-in loading states and consistent styling.
@@ -33,7 +34,7 @@ ModuleRegistry.registerModules([ AllCommunityModule ]);
           [columnDefs]="columnDefs()"
           [pagination]="true"
           [paginationPageSize]="pageSize()"
-          [paginationPageSizeSelector]="true"
+          [paginationPageSizeSelector]="paginationPageSizeSelector()"
           (gridReady)="onGridReady($event)"
         >
         </ag-grid-angular>
@@ -59,6 +60,8 @@ export class DataGrid<T = unknown> {
   pageSize = input<number>(10);
   loading = input<boolean>(false);
   theme = input<string>('ag-theme-quartz-dark');
+  // allows the user to select the page size from a predefined list of page sizes
+  paginationPageSizeSelector = input<number[]>([5, 10, 20, 50, 100]);
 
   // Outputs using the new signal-based output() API
   gridReady = output<GridReadyEvent>();
