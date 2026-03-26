@@ -7,7 +7,7 @@ export const routes: Routes = [
       import('./components/spacex/launchpad-explorer').then((m) => m.LaunchpadExplorer),
   },
   {
-    path: 'spaceXStatus',
+    path: 'status',
     loadComponent: () =>
       import('./components/spacex/spacex-api-status').then((m) => m.SystemStatus),
   },

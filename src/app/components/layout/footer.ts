@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Launchpads } from '../../services/spacex/launchpads';
 import { ApiStatus } from '../../model/spacex/apiStatus.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
+  imports: [RouterModule],
   template: `
     <footer class="mission-footer">
       <div class="mission-footer-container">
