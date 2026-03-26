@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.mission-field {
+  margin-bottom: -1.25em;
+}
+
+::ng-deep .mission-field .mat-mdc-form-field-flex {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+::ng-deep .mission-field .mat-mdc-form-field-outline {
+  color: rgba(255, 255, 255, 0.1) !important;
+}
