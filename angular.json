@@ -20,9 +20,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-
             "security" : {
-              
                 "allowedHosts": [
                   "example.com",
                   "fantastic-space-carnival-v6p4r6wjqjwcx664-4200.app.github.dev",
@@ -47,6 +45,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
