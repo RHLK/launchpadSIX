@@ -80,11 +80,12 @@ export class LaunchpadExplorer {
     {
       field: 'name',
       headerName: 'Facility Name',
+      filter: 'agSetColumnFilter',
       flex: 1,
       cellRenderer: (params: ICellRendererParams<Launchpad>) => `
         <div class="flex flex-col py-2">
-          <span class="font-bold text-mission-ink">${params.value}</span>
-          <span class="text-xs text-mission-ink/40 font-mono">${params.data?.locality}</span>
+          <span class="font-bold text-mission-ink/140">${params.value}</span>
+          <span class="text-xs text-mission-ink/80 font-mono">${params.data?.locality}</span>
         </div>
       `,
       autoHeight: true
@@ -93,7 +94,8 @@ export class LaunchpadExplorer {
       field: 'region',
       headerName: 'Region',
       width: 150,
-      cellClass: 'font-mono text-xs'
+      cellClass: 'font-mono text-xs', 
+      filter: 'agSetColumnFilter'
     },
    {
       field: 'status',
