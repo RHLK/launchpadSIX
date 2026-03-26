@@ -3,11 +3,13 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 /* AG Grid Core and Theme Styles */
-@import "ag-grid-community/styles/ag-grid.css";
 @import "ag-grid-community/styles/ag-theme-quartz.css";
 
 /* Tailwind CSS Initialization */
 @import "tailwindcss";
+
+/* Import Extracted Component Layers */
+@import "./layout.css";
 
 /* Custom Mission Control Theme Configuration */
 @theme {

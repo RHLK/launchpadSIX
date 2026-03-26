@@ -29,11 +29,16 @@ Small web   Angular application that displays information about SpaceX launchpad
    ```bash
    npm start
    ```
-   The application will be available at `http://localhost:3000`.
+   The application will be available at `http://localhost:4200`.
 
 3. **Build for Production**:
    ```bash
    npm run build
+   ```
+
+## Lint
+   ```bash
+      npm run lint
    ```
 
 ## Testing
