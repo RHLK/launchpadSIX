@@ -1,8 +1,7 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Launchpad } from '../model/launchpad.model';
-
+import { SpaceXClient } from './spacex-client';
 
 /**
  * SpaceX API Service
@@ -12,8 +11,8 @@ import { Launchpad } from '../model/launchpad.model';
   providedIn: 'root'
 })
 export class Launchpads {
-  private http = inject(HttpClient);
-  private baseUrl = 'https://api.spacexdata.com/latest';
+
+  protected spaceXClient = inject(SpaceXClient);
 
   /**
    * Shared signal for launchpads data, accessible by any component.
@@ -37,8 +36,8 @@ lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches
    */
   getLaunchpads(): Observable<Launchpad[]> {
     this.loading.set(true);
-    return this.http.get<Launchpad[]>(`${this.baseUrl}/launchpads`).pipe(
-      tap((data: any) => {
+    return this.spaceXClient.get<Launchpad[]>('/launchpads').pipe(
+      tap((data: Launchpad[]) => {
         this.launchpads.set(data);
         this.loading.set(false);
       })

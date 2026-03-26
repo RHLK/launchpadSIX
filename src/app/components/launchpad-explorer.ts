@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule  } from '@angular/common';
 import { Launchpad } from '../model/launchpad.model';
 import { Launchpads } from '../services/launchpads';
-import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, GridReadyEvent, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -52,7 +51,7 @@ import { DataGrid } from "./grid/data-grid";
           [columnDefs]="colDefs"
           [pageSize]="pageSize()"
           [loading]="launchpadService.loading()"
-          (gridReady)="onGridReady($event)"
+          (gridReady)="onGridReady()"
           [rowData]="rowData"
         >
         </app-data-grid>
@@ -136,7 +135,7 @@ export class LaunchpadExplorer {
    * Grid Ready Event Handler
    * Captures the Grid API and ensures data is bound if it arrived before the grid was ready.
    */
-  onGridReady(params: GridReadyEvent) {
+  onGridReady() {
     console.log('LaunchpadExplorer: Grid Ready');
     // Force a refresh if data is already loaded
     this.launchpadService.getLaunchpads().subscribe((data) => {this.rowData = data; console.log(data);});
