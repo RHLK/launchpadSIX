@@ -12,6 +12,12 @@ Small web   Angular application that displays information about SpaceX launchpad
 - **Responsive Design**: Optimized for both desktop & mobile.
 
 
+## Enviroment requirement
+   node.js version : v24.14.1
+   use n to swtich between versions https://codeforgeek.com/update-node-using-n/
+
+
+
 ## Setup
 
 1. **Install**:
