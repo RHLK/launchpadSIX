@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
-import { AllCommunityModule, CellClickedEvent, ColDef, GridApi, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
-import { SetFilterModule } from 'ag-grid-enterprise';
+import { CellClickedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
-
-ModuleRegistry.registerModules([ AllCommunityModule, SetFilterModule]);
 /**
  * Shared Data Grid Component
  * A reusable wrapper for AG Grid with built-in loading states and consistent styling.
