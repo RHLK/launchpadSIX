@@ -20,8 +20,13 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "define": {
-              "GEMINI_API_KEY": "'YOUR_GEMINI_API_KEY'"
+            "security" : {
+                "allowedHosts": [
+                  "example.com",
+                  "fantastic-space-carnival-v6p4r6wjqjwcx664-4200.app.github.dev",
+                  "localhost:3000","localhost:4200", "127.0.0.1", "0.0.0.0"  
+                ]
+              
             },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
@@ -35,13 +40,17 @@
               "src/styles.css"
             ],
             "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "prerender": false,
+            "ssr": false
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -72,6 +81,15 @@
             },
             "development": {
               "buildTarget": "app:build:development"
+            },
+            "options" : {
+              
+                "allowedHosts": [
+                  "example.com",
+                  "fantastic-space-carnival-v6p4r6wjqjwcx664-4200.app.github.dev",
+                  "localhost:3000","localhost:4200",  "127.0.0.1", "0.0.0.0" 
+                ]
+              
             }
           },
           "defaultConfiguration": "development"

@@ -1,0 +1,40 @@
+/* Global Font and Icon Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* AG Grid Core and Theme Styles */
+@import "ag-grid-community/styles/ag-theme-quartz.css";
+
+/* Tailwind CSS Initialization */
+@import "tailwindcss";
+
+/* Import Extracted Component Layers */
+@import "./layout.css";
+
+/* Custom Mission Control Theme Configuration */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Space Grotesk", sans-serif;
+
+  --color-mission-bg: #0a0a0b;
+  --color-mission-ink: #e2e2e4;
+  --color-mission-accent: #3b82f6;
+  --color-mission-line: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--color-mission-bg);
+  color: var(--color-mission-ink);
+  font-family: var(--font-sans);
+}
+
+/* AG Grid Quartz Dark Theme Customization */
+.ag-theme-quartz-dark {
+  --ag-background-color: #0a0a0b;
+  --ag-header-background-color: #141416;
+  --ag-odd-row-background-color: #0f0f11;
+  --ag-border-color: rgba(255, 255, 255, 0.1);
+  --ag-row-hover-color: rgba(59, 130, 246, 0.1);
+  --ag-selected-row-background-color: rgba(59, 130, 246, 0.2);
+}
