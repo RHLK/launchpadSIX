@@ -26,6 +26,7 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    ```
 2. **Envionment**:
    copy environment.example.ts and rename to environment.ts (verify the information: api urls(spaceX,...))
+   PRODUCTION set up: an environment.production.ts file must be defined
 
 3. **Run Development Server**:
 
