@@ -27,7 +27,7 @@ Small web   Angular application that displays information about SpaceX launchpad
 
 2. **Run Development Server**:
    ```bash
-   npm start
+   npm run dev
    ```
    The application will be available at `http://localhost:4200`.
 
