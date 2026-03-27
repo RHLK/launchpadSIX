@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, output, signal } from '@ang
 import { CommonModule  } from '@angular/common';
 import { Launchpad } from '../../../../model/spacex/launchpad.model';
 import { Launchpads } from '../../../../services/spacex/launchpads';
-import { CellClickedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { CellClickedEvent, ColDef, ICellRendererParams } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +33,7 @@ import { DataGrid } from "../../../grid/data-grid";
     DataGrid
 ],
   template: `
-        <app-data-grid
+          <app-data-grid
           [columnDefs]="colDefs"
           [pageSize]="pageSize()"
           [loading]="launchpadService.loading()"
