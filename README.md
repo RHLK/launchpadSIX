@@ -26,7 +26,6 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    ```
 2. **Envionment**:
    copy environment.example.ts and rename to environment.ts (verify the information: api urls(spaceX,...))
-   PRODUCTION set up: an environment.production.ts file must be defined
 
 3. **Run Development Server**:
 
@@ -34,11 +33,11 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    npm run dev
    ```
 
-   The application will be available at `http://localhost:4200`.
+   The application will be available at `http://localhost:3000`.
 
 4. **Build for Production**:
    ```bash
-   npm run build
+   npm run production
    ```
 
 ## Lint
