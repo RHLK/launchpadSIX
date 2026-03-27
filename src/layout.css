@@ -53,7 +53,7 @@
     @apply text-2xl font-display font-bold;
   }
   .mission-footer-bottom {
-    @apply flex flex-col md:flex-row items-center justify-between pt-8 border-t border-mission-line gap-4;
+    @apply flex flex-col md:flex-row items-center justify-between gap-4;
   }
   .mission-footer-copy {
     @apply text-[10px] font-mono text-mission-ink/20 uppercase tracking-widest;
