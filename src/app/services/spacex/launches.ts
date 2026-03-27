@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { SpaceXClient } from './spacex-client';
 import { Launch } from '../../model/spacex/launch.model';
@@ -22,6 +22,18 @@ export class Launches {
   loadingLaunches = signal(false);
   // Launches spacex api status data.
   apiStatus = signal<ApiStatus>(ApiStatus.CHECKING);
+  /**
+   * Computed signals for currently loaded launches (filtered by query).
+   */
+  selectedLaunchCount = computed(() => this.launches().length);
+  selectedSuccessCount = computed(() => this.launches().filter(l => l.success === true).length);
+  selectedFailureCount = computed(() => this.launches().filter(l => l.success === false).length);
+  selectedSuccessRate = computed(() => {
+    const total = this.selectedLaunchCount();
+    const success = this.selectedSuccessCount();
+    return total > 0 ? Math.round((success / total) * 100) : 0;
+  });
+
 
    /**
    * Fetches all SpaceX launches and updates the shared signal.
