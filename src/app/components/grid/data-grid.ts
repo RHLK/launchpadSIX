@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
-import { AllCommunityModule, ColDef, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
+import { AllCommunityModule, CellClickedEvent, ColDef, GridApi, GridReadyEvent, ModuleRegistry } from 'ag-grid-community';
 import { SetFilterModule } from 'ag-grid-enterprise';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -36,6 +36,8 @@ ModuleRegistry.registerModules([ AllCommunityModule, SetFilterModule]);
           [paginationPageSize]="pageSize()"
           [paginationPageSizeSelector]="paginationPageSizeSelector()"
           (gridReady)="onGridReady($event)"
+          (cellClicked)="onCellClicked($event)"
+
         >
         </ag-grid-angular>
       } @else {
@@ -51,9 +53,11 @@ ModuleRegistry.registerModules([ AllCommunityModule, SetFilterModule]);
 })
 
 export class DataGrid<T = unknown> {
+  
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
 
+  private gridApi!: GridApi;
   // Inputs using the new signal-based input() API
   rowData = input<T[]>([]);
   columnDefs = input<ColDef[]>([]);
@@ -65,8 +69,23 @@ export class DataGrid<T = unknown> {
 
   // Outputs using the new signal-based output() API
   gridReady = output<GridReadyEvent>();
+  cellClicked = output<CellClickedEvent>();
 
   onGridReady(params: GridReadyEvent) {
     this.gridReady.emit(params);
+  }
+
+  onCellClicked(params: CellClickedEvent) {
+    this.cellClicked.emit(params);
+  }
+  onFilterChange(event: Event) {
+    const val = (event.target as HTMLInputElement).value;
+    this.gridApi.setGridOption('quickFilterText', val);
+  }
+
+  onPageSizeChange() {
+    if (this.gridApi) {
+      this.gridApi.setGridOption('paginationPageSize', this.pageSize());
+    }
   }
 }

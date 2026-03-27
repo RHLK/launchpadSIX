@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Launchpads } from '../../services/launchpads';
+import { Launchpads } from '../../services/spacex/launchpads';
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +13,7 @@ import { Launchpads } from '../../services/launchpads';
           </div>
           <div class="mission-stat-item">
             <span class="mission-stat-label">Active Status</span>
-            <span class="mission-stat-value text-emerald-500">{{ launchpadsService.successRate() }}</span>
+            <span class="mission-stat-value text-emerald-500">{{ launchpadsService.activeCount() }}</span>
           </div>
           <div class="mission-stat-item">
             <span class="mission-stat-label">Total Launches</span>
@@ -27,11 +27,11 @@ import { Launchpads } from '../../services/launchpads';
         
         <div class="mission-footer-bottom">
           <p class="mission-footer-copy">
-            © 2026 SpaceX Mission Control • Telemetry Node v3.1.0
+            © 2026 SpaceX Mission Control • Launchpads
           </p>
           <div class="mission-footer-links">
-            <a href="#" class="mission-footer-link">API Documentation</a>
-            <a href="#" class="mission-footer-link">System Status</a>
+            <a href="https://github.com/r-spacex/SpaceX-API/blob/master/docs/README.md" class="mission-footer-link">API Documentation</a>
+            <a href="/spaceXStatus" class="mission-footer-link">System Status</a>
           </div>
         </div>
       </div>

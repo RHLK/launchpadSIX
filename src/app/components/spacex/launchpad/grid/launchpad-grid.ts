@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
 import { CommonModule  } from '@angular/common';
-import { Launchpad } from '../model/launchpad.model';
-import { Launchpads } from '../services/launchpads';
-import { ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
+import { Launchpad } from '../../../../model/spacex/launchpad.model';
+import { Launchpads } from '../../../../services/spacex/launchpads';
+import { CellClickedEvent, ColDef, GridApi, ICellRendererParams } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
-import { DataGrid } from "./grid/data-grid";
+import { DataGrid } from "../../../grid/data-grid";
 
     
 /**
@@ -20,7 +20,7 @@ import { DataGrid } from "./grid/data-grid";
  * Material Design components for UI elements.
  */
 @Component({
-  selector: 'app-launchpad-explorer',
+  selector: 'app-launchpad-grid',
   imports: [
     CommonModule,
     MatIconModule,
@@ -33,44 +33,30 @@ import { DataGrid } from "./grid/data-grid";
     DataGrid
 ],
   template: `
-    <div class="max-w-7xl mx-auto p-4 md:p-8 flex flex-col gap-6">
-      
-
-      <!-- Main Grid -->
-      <div class="flex-1 min-h-[500px] relative">
-        <div class="absolute top-0 right-0 p-2 text-xs font-mono text-mission-ink/20 z-20">
-          TELEMETRY STATUS: {{ launchpadService.launchpads().length }} NODES
-        </div>
-        @if (launchpadService.loading()) {
-          <div class="absolute inset-0 z-10 flex items-center justify-center bg-mission-bg/50 backdrop-blur-sm">
-            <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
-          </div>
-        }
-
         <app-data-grid
           [columnDefs]="colDefs"
           [pageSize]="pageSize()"
           [loading]="launchpadService.loading()"
           (gridReady)="onGridReady()"
           [rowData]="rowData"
+          (cellClicked)="onCellClicked($event)"
         >
         </app-data-grid>
         
-      </div>
-    </div>
   `,
-  styleUrl: './launchpad-explorer.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LaunchpadExplorer {
-  protected launchpadService = inject(Launchpads);
+export class LaunchpadGrid {
 
-  private gridApi!: GridApi;
-    // Row Data: The data to be displayed.
-    rowData: Launchpad[] = [];
+  protected launchpadService = inject(Launchpads);
+    
+  // Row Data: The data to be displayed.
+  rowData: Launchpad[] = [];
 
   pageSize = signal(5);
 
+  selectedLaunchpad = signal<Launchpad | null>(null);
+  
   /**
    * AG Grid Column Definitions
    * Defines the structure, styling, and custom rendering for the grid columns.
@@ -96,6 +82,13 @@ export class LaunchpadExplorer {
       cellClass: 'font-mono text-xs', 
       filter: 'agSetColumnFilter'
     },
+    {
+        field: 'locality',
+        headerName: 'Locality',
+        width: 150,
+        cellClass: 'font-mono text-xs', 
+        filter: 'agSetColumnFilter'
+      },
    {
       field: 'status',
       headerName: 'Status',
@@ -109,26 +102,27 @@ export class LaunchpadExplorer {
       headerName: 'Launches',
       valueGetter: (params) => params.data?.launches?.length || 0,
       width: 120,
-      cellClass: 'font-mono text-center'
-    },
-    {
-      headerName: 'Actions',
-      width: 150,
       cellRenderer: (params: ICellRendererParams<Launchpad>) => {
+        const count = params.data?.launches?.length || 0;
+        if (count === 0) return '<span class="text-mission-ink/20 font-mono text-xs">0</span>';
         return `
-          <div class="flex gap-2 items-center h-full">
-            <a href="${params.data?.wikipedia}" target="_blank" class="text-mission-accent hover:underline text-xs flex items-center gap-1">
-              Wiki <span class="material-icons text-[14px]">open_in_new</span>
-            </a>
-          </div>
+        <button 
+            class="view-launches-btn flex items-center justify-center gap-1 w-full h-full text-mission-accent hover:text-mission-accent/80 transition-colors cursor-pointer"
+            title="Select a facility to view its launches history">
+            <span class="material-icons text-[18px] pointer-events-none">rocket_launch</span>
+            <span class="font-mono text-xs pointer-events-none">${count}</span>
+        </button>
         `;
       }
     }
   ];
 
-  constructor() {
-    console.log('LaunchpadExplorer: loaded...');
-   
+ 
+
+  cellClicked = output<CellClickedEvent>();
+
+  onCellClicked(params: CellClickedEvent) {
+    this.cellClicked.emit(params);
   }
 
   /**
@@ -136,19 +130,9 @@ export class LaunchpadExplorer {
    * Captures the Grid API and ensures data is bound if it arrived before the grid was ready.
    */
   onGridReady() {
-    console.log('LaunchpadExplorer: Grid Ready');
+    console.log('Launchpad Grid Ready');
     // Force a refresh if data is already loaded
     this.launchpadService.getLaunchpads().subscribe((data) => {this.rowData = data; console.log(data);});
   }
 
-  onFilterChange(event: Event) {
-    const val = (event.target as HTMLInputElement).value;
-    this.gridApi.setGridOption('quickFilterText', val);
-  }
-
-  onPageSizeChange() {
-    if (this.gridApi) {
-      this.gridApi.setGridOption('paginationPageSize', this.pageSize());
-    }
-  }
 }
