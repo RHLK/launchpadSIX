@@ -24,14 +24,16 @@ Small web   Angular application that displays information about SpaceX launchpad
    ```bash
    npm install
    ```
+2. **Envionment**:
+   copy environment.example.ts and rename to environment.ts (verify the information: api urls(spaceX,...))
 
-2. **Run Development Server**:
+3. **Run Development Server**:
    ```bash
    npm run dev
    ```
    The application will be available at `http://localhost:4200`.
 
-3. **Build for Production**:
+4. **Build for Production**:
    ```bash
    npm run build
    ```
