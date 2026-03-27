@@ -1,6 +1,7 @@
 # launchpadSIX
-Small web   Angular application that displays information about SpaceX launchpads
-
+Mission Control (SpaceX Telemetry System)
+Small web Angular application that displays information about SpaceX launchpads and its missions.s
+The app is designed as a technical dashboard for exploring SpaceX launch facilities. "Telemetry" refers to the automatic recording and transmission of data from remote or inaccessible sources to an IT system in a different location for monitoring and analysis—this app pulls real-time data from the SpaceX API('https://api.spacexdata.com/latest').
 
 ## Functionalities
 
@@ -8,15 +9,13 @@ Small web   Angular application that displays information about SpaceX launchpad
 - **Advanced Grid**: Data displayed by Ag-Grid.
 - **Filtering**: Quick search by name, region, or locality.
 - **Pagination**: Configurable records per page (default: 5).
-- **Mission Control UI**: A sleek, scifi-themed interface inspired by aerospace telemetry systems.
+- **Mission Control UI**: A sleek, dashboard interface.
 - **Responsive Design**: Optimized for both desktop & mobile.
 
 
 ## Enviroment requirement
    node.js version : v24.14.1
    use n to swtich between versions https://codeforgeek.com/update-node-using-n/
-
-
 
 ## Setup
 

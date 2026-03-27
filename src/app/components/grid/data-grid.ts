@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { CellClickedEvent, ColDef, GridApi, GridReadyEvent, Theme, themeQuartz } from 'ag-grid-community';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-data-grid',
   imports: [CommonModule, AgGridAngular, MatProgressSpinnerModule],
   template: `
-    <div class="flex-1 min-h-[500px] relative h-full">
+    <div class="flex-1 min-h-[550px] relative h-full">
       <!-- Loading Overlay -->
       @if (loading()) {
         <div class="absolute inset-0 z-10 flex items-center justify-center bg-mission-bg/50 backdrop-blur-sm rounded-xl">
@@ -26,7 +26,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         <ag-grid-angular
 
         style="width: 100%; height: 550px;"
-          [class]="theme() + ' w-full h-full rounded-xl overflow-hidden border border-mission-line'"
+          class="w-full h-full rounded-xl overflow-hidden border border-mission-line"
+          [theme]="gridTheme()"
           [rowData]="rowData()"
           [columnDefs]="columnDefs()"
           [pagination]="true"
@@ -60,7 +61,20 @@ export class DataGrid<T = unknown> {
   columnDefs = input<ColDef[]>([]);
   pageSize = input<number>(10);
   loading = input<boolean>(false);
-  theme = input<string>('ag-theme-quartz-dark');
+
+  // Use the new Theming API with CSS variables from styles.css
+  gridTheme = input<Theme>(themeQuartz.withParams({
+    backgroundColor: 'var(--color-mission-bg)',
+    headerBackgroundColor: 'var(--color-mission-header-bg)',
+    oddRowBackgroundColor: 'var(--color-mission-odd-row-bg)',
+    borderColor: 'var(--color-mission-line)',
+    rowHoverColor: 'var(--color-mission-accent-muted)',
+    selectedRowBackgroundColor: 'var(--color-mission-accent-selected)',
+    fontFamily: 'var(--font-sans)',
+    headerTextColor: 'var(--color-mission-ink)',
+    textColor: 'var(--color-mission-ink)',
+  }));
+  
   // allows the user to select the page size from a predefined list of page sizes
   paginationPageSizeSelector = input<number[]>([5, 10, 20, 50, 100]);
 
