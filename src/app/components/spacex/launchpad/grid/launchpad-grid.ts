@@ -3,13 +3,6 @@ import { CommonModule  } from '@angular/common';
 import { Launchpad } from '../../../../model/spacex/launchpad.model';
 import { Launchpads } from '../../../../services/spacex/launchpads';
 import { CellClickedEvent, ColDef, ICellRendererParams } from 'ag-grid-community';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormsModule } from '@angular/forms';
 import { DataGrid } from "../../../grid/data-grid";
 
     
@@ -23,13 +16,6 @@ import { DataGrid } from "../../../grid/data-grid";
   selector: 'app-launchpad-grid',
   imports: [
     CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    FormsModule,
     DataGrid
 ],
   template: `
@@ -69,8 +55,8 @@ export class LaunchpadGrid {
       flex: 1,
       cellRenderer: (params: ICellRendererParams<Launchpad>) => `
         <div class="flex flex-col py-2">
-          <span class="font-bold text-mission-ink/140">${params.value}</span>
-          <span class="text-xs text-mission-ink/80 font-mono">${params.data?.locality}</span>
+          <span class="font-bold text-mission-ink/70">${params.value}</span>
+          <span class="text-xs text-mission-ink/60 font-mono">${params.data?.locality}</span>
         </div>
       `,
       autoHeight: true
@@ -116,8 +102,6 @@ export class LaunchpadGrid {
       }
     }
   ];
-
- 
 
   cellClicked = output<CellClickedEvent>();
 
