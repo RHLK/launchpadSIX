@@ -8,7 +8,6 @@ import { SpaceXClient } from './spacex-client';
 import { TestBed } from '@angular/core/testing';
 
 describe('SpaceX Launchpad and Launches Client Service', () => {
-
   let launchpadService: Launchpads;
   let launchesService: Launches;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,14 +16,11 @@ describe('SpaceX Launchpad and Launches Client Service', () => {
   beforeEach(() => {
     spacexClientMock = {
       get: vi.fn(),
-      post: vi.fn()
+      post: vi.fn(),
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        Launchpads, Launches,
-        { provide: SpaceXClient, useValue: spacexClientMock }
-      ]
+      providers: [Launchpads, Launches, { provide: SpaceXClient, useValue: spacexClientMock }],
     });
 
     launchpadService = TestBed.inject(Launchpads);
@@ -35,7 +31,7 @@ describe('SpaceX Launchpad and Launches Client Service', () => {
     const mockData: Launchpad[] = [{ id: '1', name: 'Pad 1' } as Launchpad];
     spacexClientMock.get.mockReturnValue(of(mockData));
 
-    launchpadService.getLaunchpads().subscribe(data => {
+    launchpadService.getLaunchpads().subscribe((data) => {
       expect(data).toEqual(mockData);
     });
 
@@ -48,7 +44,7 @@ describe('SpaceX Launchpad and Launches Client Service', () => {
     launchpadService.getLaunchpads().subscribe({
       error: (err) => {
         expect(err.message).toBe('API Error');
-      }
+      },
     });
   });
 });

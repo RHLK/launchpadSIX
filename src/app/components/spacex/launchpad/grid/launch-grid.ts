@@ -1,41 +1,35 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule  } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { DataGrid } from "../../../grid/data-grid";
+import { DataGrid } from '../../../grid/data-grid';
 import { Launches } from '../../../../services/spacex/launches';
 import { Launch } from '../../../../model/spacex/launch.model';
 
-    
 /**
  * SpaceX Launchpad Explorer Component
  * This component provides a real-time dashboard for exploring SpaceX launch facilities.
- * It uses AG Grid for data display, Angular Signals for state management, and 
+ * It uses AG Grid for data display, Angular Signals for state management, and
  * Material Design components for UI elements.
  */
 @Component({
   selector: 'app-launch-grid',
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    DataGrid
-],
+  imports: [CommonModule, MatIconModule, MatButtonModule, DataGrid],
   template: `
-        <app-data-grid
-            [rowData]="launchesService.launches()"
-            [columnDefs]="launchColDefs"
-            [pageSize]="10"
-            [loading]="launchesService.loadingLaunches()"
-            >
-        </app-data-grid>
+    <app-data-grid
+      [rowData]="launchesService.launches()"
+      [columnDefs]="launchColDefs"
+      [pageSize]="10"
+      [loading]="launchesService.loadingLaunches()"
+    >
+    </app-data-grid>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LaunchGrid {
-    protected launchesService = inject(Launches);
-    /**
+  protected launchesService = inject(Launches);
+  /**
    * AG Grid Column Definitions for Launches
    */
   launchColDefs: ColDef[] = [
@@ -43,7 +37,7 @@ export class LaunchGrid {
       field: 'flight_number',
       headerName: 'Flight #',
       width: 100,
-      cellClass: 'font-mono text-xs'
+      cellClass: 'font-mono text-xs',
     },
     {
       field: 'name',
@@ -58,31 +52,31 @@ export class LaunchGrid {
           </div>
         </div>
       `,
-      autoHeight: true
+      autoHeight: true,
     },
     {
       field: 'success',
       headerName: 'Outcome',
       width: 120,
       cellRenderer: (params: ICellRendererParams<Launch>) => {
-        if (params.value === null) return '<span class="text-mission-ink/40 uppercase text-[10px] font-bold">Upcoming</span>';
+        if (params.value === null)
+          return '<span class="text-mission-ink/40 uppercase text-[10px] font-bold">Upcoming</span>';
         const color = params.value ? 'text-emerald-500' : 'text-rose-500';
         const label = params.value ? 'Success' : 'Failure';
         return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${label}</span>`;
-      }
+      },
     },
     {
       field: 'details',
       headerName: 'Mission Details',
       flex: 2,
       cellClass: 'text-xs text-mission-ink/60 italic line-clamp-2 leading-relaxed',
-      tooltipField: 'details'
+      tooltipField: 'details',
     },
     {
       headerName: 'Actions',
       width: 150,
       cellRenderer: (params: ICellRendererParams<Launch>) => {
-        
         return `
           <div class="flex gap-2 items-center h-full">
             <a href="${params.data?.links.wikipedia}" target="_blank" class="text-mission-ink/40 hover:text-mission-ink transition-colors">
@@ -90,9 +84,7 @@ export class LaunchGrid {
             </a>
           </div>
         `;
-      }
-    }
+      },
+    },
   ];
- 
-
 }
