@@ -1,0 +1,14 @@
+jobs:
+  analyze:
+    name: Analyze
+    uses: github/codeql-action/init@v4
+    with:
+      languages: javascript-typescript
+on:
+  push:
+    branches: [main, protected]
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
