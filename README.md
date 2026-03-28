@@ -1,4 +1,5 @@
 # launchpadSIX
+
 Mission Control (SpaceX Telemetry System)
 Small web Angular application that displays information about SpaceX launchpads and its missions.s
 The app is designed as a technical dashboard for exploring SpaceX launch facilities. "Telemetry" refers to the automatic recording and transmission of data from remote or inaccessible sources to an IT system in a different location for monitoring and analysis—this app pulls real-time data from the SpaceX API('https://api.spacexdata.com/latest').
@@ -12,10 +13,10 @@ The app is designed as a technical dashboard for exploring SpaceX launch facilit
 - **Mission Control UI**: A sleek, dashboard interface.
 - **Responsive Design**: Optimized for both desktop & mobile.
 
-
 ## Enviroment requirement
-   node.js version : v24.14.1
-   use n to swtich between versions https://codeforgeek.com/update-node-using-n/
+
+node.js version : v24.14.1
+use n to swtich between versions https://codeforgeek.com/update-node-using-n/
 
 ## Setup
 
@@ -28,9 +29,11 @@ The app is designed as a technical dashboard for exploring SpaceX launch facilit
    PRODUCTION set up: an environment.production.ts file must be defined
 
 3. **Run Development Server**:
+
    ```bash
    npm run dev
    ```
+
    The application will be available at `http://localhost:4200`.
 
 4. **Build for Production**:
@@ -39,9 +42,16 @@ The app is designed as a technical dashboard for exploring SpaceX launch facilit
    ```
 
 ## Lint
-   ```bash
-      npm run lint
-   ```
+
+```bash
+   npm run lint
+```
+
+## Format
+
+```bash
+   npm run format
+```
 
 ## Testing
 

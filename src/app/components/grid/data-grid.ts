@@ -1,9 +1,22 @@
-import { ChangeDetectionStrategy, Component, input, output, inject, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, ColDef, GridApi, GridReadyEvent, Theme, themeQuartz } from 'ag-grid-community';
+import {
+  CellClickedEvent,
+  ColDef,
+  GridApi,
+  GridReadyEvent,
+  Theme,
+  themeQuartz,
+} from 'ag-grid-community';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 
 /**
  * Shared Data Grid Component
@@ -13,10 +26,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-data-grid',
   imports: [CommonModule, AgGridAngular, MatProgressSpinnerModule],
   template: `
-    <div class="flex-1 min-h-[550px] relative h-full">
+    <div class="relative h-full min-h-[550px] flex-1">
       <!-- Loading Overlay -->
       @if (loading()) {
-        <div class="absolute inset-0 z-10 flex items-center justify-center bg-mission-bg/50 backdrop-blur-sm rounded-xl">
+        <div
+          class="bg-mission-bg/50 absolute inset-0 z-10 flex items-center justify-center rounded-xl backdrop-blur-sm"
+        >
           <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
         </div>
       }
@@ -24,9 +39,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       <!-- Grid Instance -->
       @if (isBrowser) {
         <ag-grid-angular
-
-        style="width: 100%; height: 550px;"
-          class="w-full h-full rounded-xl overflow-hidden border border-mission-line"
+          style="width: 100%; height: 550px;"
+          class="border-mission-line h-full w-full overflow-hidden rounded-xl border"
           [theme]="gridTheme()"
           [rowData]="rowData()"
           [columnDefs]="columnDefs()"
@@ -35,23 +49,24 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           [paginationPageSizeSelector]="paginationPageSizeSelector()"
           (gridReady)="onGridReady($event)"
           (cellClicked)="onCellClicked($event)"
-
         >
         </ag-grid-angular>
       } @else {
         <!-- SSR Fallback -->
-        <div class="w-full h-full rounded-xl border border-mission-line bg-mission-line/5 flex items-center justify-center">
-          <span class="text-mission-ink/20 font-mono text-sm uppercase tracking-widest">Initializing Telemetry...</span>
+        <div
+          class="border-mission-line bg-mission-line/5 flex h-full w-full items-center justify-center rounded-xl border"
+        >
+          <span class="text-mission-ink/20 font-mono text-sm tracking-widest uppercase"
+            >Initializing Telemetry...</span
+          >
         </div>
       }
     </div>
   `,
   styleUrl: './data-grid.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class DataGrid<T = unknown> {
-  
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
 
@@ -63,18 +78,20 @@ export class DataGrid<T = unknown> {
   loading = input<boolean>(false);
 
   // Use the new Theming API with CSS variables from styles.css
-  gridTheme = input<Theme>(themeQuartz.withParams({
-    backgroundColor: 'var(--color-mission-bg)',
-    headerBackgroundColor: 'var(--color-mission-header-bg)',
-    oddRowBackgroundColor: 'var(--color-mission-odd-row-bg)',
-    borderColor: 'var(--color-mission-line)',
-    rowHoverColor: 'var(--color-mission-accent-muted)',
-    selectedRowBackgroundColor: 'var(--color-mission-accent-selected)',
-    fontFamily: 'var(--font-sans)',
-    headerTextColor: 'var(--color-mission-ink)',
-    textColor: 'var(--color-mission-ink)',
-  }));
-  
+  gridTheme = input<Theme>(
+    themeQuartz.withParams({
+      backgroundColor: 'var(--color-mission-bg)',
+      headerBackgroundColor: 'var(--color-mission-header-bg)',
+      oddRowBackgroundColor: 'var(--color-mission-odd-row-bg)',
+      borderColor: 'var(--color-mission-line)',
+      rowHoverColor: 'var(--color-mission-accent-muted)',
+      selectedRowBackgroundColor: 'var(--color-mission-accent-selected)',
+      fontFamily: 'var(--font-sans)',
+      headerTextColor: 'var(--color-mission-ink)',
+      textColor: 'var(--color-mission-ink)',
+    }),
+  );
+
   // allows the user to select the page size from a predefined list of page sizes
   paginationPageSizeSelector = input<number[]>([5, 10, 20, 50, 100]);
 

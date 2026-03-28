@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
             <span class="mission-subtitle">SpaceX Telemetry System</span>
           </div>
         </div>
-        
+
         <nav class="mission-nav">
           <a href="#" class="mission-nav-link mission-nav-link-active">Launchpads</a>
           <a href="#" class="mission-nav-link">Missions</a>
@@ -24,6 +24,6 @@ import { MatIconModule } from '@angular/material/icon';
         </nav>
       </div>
     </header>
-  `
+  `,
 })
 export class Header {}
