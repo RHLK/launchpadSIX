@@ -26,5 +26,7 @@
 
 /* Global Transitions */
 * {
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }

@@ -1,67 +1,66 @@
-
 /* Layout Component Classes */
 @layer components {
   /* Header Classes */
   .mission-header {
-    @apply border-b border-mission-line bg-mission-bg/80 backdrop-blur-md sticky top-0 z-50;
+    @apply border-mission-line bg-mission-bg/80 sticky top-0 z-50 border-b backdrop-blur-md;
   }
   .mission-header-container {
-    @apply max-w-7xl mx-auto px-4 h-16 flex items-center justify-between;
+    @apply mx-auto flex h-16 max-w-7xl items-center justify-between px-4;
   }
   .mission-logo-container {
     @apply flex items-center gap-3;
   }
   .mission-logo-icon-wrapper {
-    @apply bg-mission-accent/10 p-2 rounded-lg border border-mission-accent/20;
+    @apply bg-mission-accent/10 border-mission-accent/20 rounded-lg border p-2;
   }
   .mission-logo-icon {
     @apply text-mission-accent;
   }
   .mission-title {
-    @apply font-display font-bold text-lg tracking-tight leading-none;
+    @apply font-display text-lg leading-none font-bold tracking-tight;
   }
   .mission-subtitle {
-    @apply font-mono text-[10px] uppercase tracking-widest text-mission-ink/40;
+    @apply text-mission-ink/40 font-mono text-[10px] tracking-widest uppercase;
   }
   .mission-nav {
-    @apply hidden md:flex items-center gap-6;
+    @apply hidden items-center gap-6 md:flex;
   }
   .mission-nav-link {
-    @apply text-xs font-mono uppercase tracking-widest text-mission-ink/40 hover:text-mission-ink transition-colors;
+    @apply text-mission-ink/40 hover:text-mission-ink font-mono text-xs tracking-widest uppercase transition-colors;
   }
   .mission-nav-link-active {
-    @apply text-mission-accent border-b border-mission-accent pb-1;
+    @apply text-mission-accent border-mission-accent border-b pb-1;
   }
 
   /* Footer Classes */
   .mission-footer {
-    @apply border-t border-mission-line bg-mission-line/5 py-8 mt-auto;
+    @apply border-mission-line bg-mission-line/5 mt-auto border-t py-8;
   }
   .mission-footer-container {
-    @apply max-w-7xl mx-auto px-4;
+    @apply mx-auto max-w-7xl px-4;
   }
   .mission-stat-grid {
-    @apply grid grid-cols-2 md:grid-cols-4 gap-8 mb-8;
+    @apply mb-8 grid grid-cols-2 gap-8 md:grid-cols-4;
   }
   .mission-stat-item {
     @apply flex flex-col gap-1;
   }
   .mission-stat-label {
-    @apply text-[10px] font-mono uppercase tracking-widest text-mission-ink/40;
+    @apply text-mission-ink/40 font-mono text-[10px] tracking-widest uppercase;
   }
   .mission-stat-value {
-    @apply text-2xl font-display font-bold;
+    @apply font-display text-2xl font-bold;
   }
   .mission-footer-bottom {
-    @apply flex flex-col md:flex-row items-center justify-between gap-4;
+    @apply flex flex-col items-center justify-between gap-4 md:flex-row;
   }
   .mission-footer-copy {
-    @apply text-[10px] font-mono text-mission-ink/20 uppercase tracking-widest;
+    @apply text-mission-ink/20 font-mono text-[10px] tracking-widest uppercase;
   }
   .mission-footer-links {
     @apply flex items-center gap-6;
   }
   .mission-footer-link {
-    @apply text-[10px] font-mono text-mission-ink/20 hover:text-mission-accent transition-colors uppercase tracking-widest underline underline-offset-4;
+    @apply text-mission-ink/20 hover:text-mission-accent font-mono text-[10px] tracking-widest uppercase underline underline-offset-4 transition-colors;
   }
 }

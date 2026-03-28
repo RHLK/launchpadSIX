@@ -15,6 +15,7 @@ This document provides context and guidelines for the SpaceX Mission Control pro
 ## Architecture & Best Practices
 
 ### Components
+
 - Use **Standalone Components** (default in Angular v21+).
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` for all components.
 - Use `input()`, `output()`, and `computed()` for state and data flow.
@@ -22,12 +23,14 @@ This document provides context and guidelines for the SpaceX Mission Control pro
 - Use native control flow (`@if`, `@for`, `@switch`) instead of legacy directives.
 
 ### Styling
+
 - Use Tailwind CSS utility classes for all styling.
 - Theme variables are defined in `src/styles.css` under the `@theme` block.
 - Component-specific styles should be placed in `src/components.css` using `@apply` where appropriate.
 - **Palette:** Dark theme using `mission-bg` (#0a0a0b) and `mission-ink` (#a1a1aa).
 
 ### Services
+
 - Use `inject()` for dependency injection instead of constructor injection.
 - Services should be provided in `'root'` for singleton behavior.
 - Use `signal` and `computed` for reactive state within services.
@@ -37,10 +40,12 @@ This document provides context and guidelines for the SpaceX Mission Control pro
 The project uses **Vitest** for unit and component testing.
 
 ### Running Tests
+
 - `npm test`: Runs the test suite using Vitest.
 - `npm run lint`: Runs Angular ESLint for code quality checks.
 
 ### Guidelines
+
 - Focus on testing business logic in services and component interactions.
 - Use `TestBed` for Angular-specific integration tests.
 - Mock external dependencies (like the SpaceX service) in component tests.

@@ -10,10 +10,9 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
  * Handles data fetching Launches from the SpaceX public API.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Launches {
-
   protected spaceXClient = inject(SpaceXClient);
   /**
    * Shared signal for launchpads data, accessible by any component.
@@ -26,20 +25,19 @@ export class Launches {
    * Computed signals for currently loaded launches (filtered by query).
    */
   selectedLaunchCount = computed(() => this.launches().length);
-  selectedSuccessCount = computed(() => this.launches().filter(l => l.success === true).length);
-  selectedFailureCount = computed(() => this.launches().filter(l => l.success === false).length);
+  selectedSuccessCount = computed(() => this.launches().filter((l) => l.success === true).length);
+  selectedFailureCount = computed(() => this.launches().filter((l) => l.success === false).length);
   selectedSuccessRate = computed(() => {
     const total = this.selectedLaunchCount();
     const success = this.selectedSuccessCount();
     return total > 0 ? Math.round((success / total) * 100) : 0;
   });
 
-
-   /**
+  /**
    * Fetches all SpaceX launches and updates the shared signal.
    * @returns An Observable of Launch array.
    */
-   getLaunches(): Observable<Launch[]> {
+  getLaunches(): Observable<Launch[]> {
     this.loadingLaunches.set(true);
     this.apiStatus.set(ApiStatus.CHECKING);
     return this.spaceXClient.get<Launch[]>('/launches').pipe(
@@ -52,25 +50,29 @@ export class Launches {
         error: () => {
           this.loadingLaunches.set(false);
           this.apiStatus.set(ApiStatus.OFFLINE);
-        }
-      })
+        },
+      }),
     );
   }
 
-  
   /**
    * Queries SpaceX launches using the /launches/query endpoint.
    * @param query The query object (mongo-style).
    * @param options The pagination and sorting options.
    * @returns An Observable of QueryResponse containing the launches.
    */
-  queryLaunches(query: Record<string, unknown> = {}, options: Record<string, unknown> = {}): Observable<QueryResponse<Launch>> {
+  queryLaunches(
+    query: Record<string, unknown> = {},
+    options: Record<string, unknown> = {},
+  ): Observable<QueryResponse<Launch>> {
     this.loadingLaunches.set(true);
-    return this.spaceXClient.post<QueryResponse<Launch>>('/launches/query', { query, options }).pipe(
-      tap(response => {
-        this.launches.set(response.docs);
-        this.loadingLaunches.set(false);
-      })
-    );
+    return this.spaceXClient
+      .post<QueryResponse<Launch>>('/launches/query', { query, options })
+      .pipe(
+        tap((response) => {
+          this.launches.set(response.docs);
+          this.loadingLaunches.set(false);
+        }),
+      );
   }
 }

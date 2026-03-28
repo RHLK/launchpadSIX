@@ -1,11 +1,10 @@
 :host {
-    display: block;
-    height: 100%;
-  }
-  
-  ::ng-deep .ag-theme-quartz-dark {
-    --ag-font-family: 'Inter', sans-serif;
-    --ag-header-foreground-color: rgba(255, 255, 255, 0.5);
-    --ag-header-column-separator-display: none;
-  }
-  
+  display: block;
+  height: 100%;
+}
+
+::ng-deep .ag-theme-quartz-dark {
+  --ag-font-family: 'Inter', sans-serif;
+  --ag-header-foreground-color: rgba(255, 255, 255, 0.5);
+  --ag-header-column-separator-display: none;
+}

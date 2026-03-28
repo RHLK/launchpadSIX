@@ -9,10 +9,9 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
  * Handles data fetching Launchpads from the SpaceX public API.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Launchpads {
-
   protected spaceXClient = inject(SpaceXClient);
 
   /**
@@ -26,15 +25,20 @@ export class Launchpads {
   /**
    * Shared computed signals for telemetry statistics.
    * */
-lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches.length, 0));
+  lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches.length, 0));
   successRate = computed(() => {
-    const total = this.launchpads().reduce((acc: number, l: Launchpad) => acc + l.launch_attempts, 0);
-    const success = this.launchpads().reduce((acc: number, l:Launchpad) => acc + l.launch_successes, 0);
+    const total = this.launchpads().reduce(
+      (acc: number, l: Launchpad) => acc + l.launch_attempts,
+      0,
+    );
+    const success = this.launchpads().reduce(
+      (acc: number, l: Launchpad) => acc + l.launch_successes,
+      0,
+    );
     return total > 0 ? Math.round((success / total) * 100) : 0;
   });
 
-  activeCount = computed(() => this.launchpads().filter(l => l.status === 'active').length);
-
+  activeCount = computed(() => this.launchpads().filter((l) => l.status === 'active').length);
 
   /**
    * Fetches all SpaceX launchpads and updates the shared signal.
@@ -53,8 +57,8 @@ lLaunches = computed(() => this.launchpads().reduce((acc, l) => acc + l.launches
         error: () => {
           this.loading.set(false);
           this.apiStatus.set(ApiStatus.OFFLINE);
-        }
-      })
+        },
+      }),
     );
   }
 }

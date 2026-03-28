@@ -2,7 +2,7 @@
  * SpaceX API Status Enum
  */
 export enum ApiStatus {
-    ONLINE = 'online',
-    OFFLINE = 'offline',
-    CHECKING = 'checking'
-  }
+  ONLINE = 'online',
+  OFFLINE = 'offline',
+  CHECKING = 'checking',
+}
