@@ -12,88 +12,119 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
   standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule, RouterModule],
   template: `
-    <div class="max-w-4xl mx-auto p-8 flex flex-col gap-8">
-      <header class="border-b border-mission-line pb-6">
+    <div class="mx-auto flex max-w-4xl flex-col gap-8 p-8">
+      <header class="border-mission-line border-b pb-6">
         <h2 class="font-display text-4xl font-bold tracking-tight">System Status</h2>
-        <p class="text-mission-ink/60 mt-1">Telemetry node health and external API connectivity status.</p>
+        <p class="text-mission-ink/60 mt-1">
+          Telemetry node health and external API connectivity status.
+        </p>
       </header>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <!-- Launchpads API Health Card -->
-        <div class="bg-mission-ink/5 border border-mission-line p-6 rounded-xl flex flex-col gap-4">
+        <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
           <div class="flex items-center justify-between">
             <h3 class="font-display text-xl font-semibold">Launchpads Endpoint</h3>
-            <span [class]="'px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ' + 
-              (launchpadService.apiStatus() === ApiStatus.ONLINE ? 'bg-emerald-500/10 text-emerald-500' : 
-               launchpadService.apiStatus() === ApiStatus.OFFLINE ? 'bg-rose-500/10 text-rose-500' : 
-               'bg-amber-500/10 text-amber-500')">
+            <span
+              [class]="
+                'rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase ' +
+                (launchpadService.apiStatus() === ApiStatus.ONLINE
+                  ? 'bg-emerald-500/10 text-emerald-500'
+                  : launchpadService.apiStatus() === ApiStatus.OFFLINE
+                    ? 'bg-rose-500/10 text-rose-500'
+                    : 'bg-amber-500/10 text-amber-500')
+              "
+            >
               {{ launchesService.apiStatus() }}
             </span>
           </div>
-          <p class="text-sm text-mission-ink/60">
-            Connectivity to the SpaceX Launchpads endpoint. Monitors availability of global launch facility data.
+          <p class="text-mission-ink/60 text-sm">
+            Connectivity to the SpaceX Launchpads endpoint. Monitors availability of global launch
+            facility data.
           </p>
-          <div class="flex items-center gap-2 text-xs font-mono text-mission-ink/40">
-            <mat-icon class="text-[14px] w-auto h-auto">cloud_queue</mat-icon>
+          <div class="text-mission-ink/40 flex items-center gap-2 font-mono text-xs">
+            <mat-icon class="h-auto w-auto text-[14px]">cloud_queue</mat-icon>
             ENDPOINT: /launchpads
           </div>
         </div>
 
         <!-- Launches API Health Card -->
-        <div class="bg-mission-ink/5 border border-mission-line p-6 rounded-xl flex flex-col gap-4">
+        <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
           <div class="flex items-center justify-between">
             <h3 class="font-display text-xl font-semibold">Launches Endpoint</h3>
-            <span [class]="'px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ' + 
-              (launchesService.apiStatus() === ApiStatus.ONLINE ? 'bg-emerald-500/10 text-emerald-500' : 
-              launchesService.apiStatus() === ApiStatus.OFFLINE ? 'bg-rose-500/10 text-rose-500' : 
-               'bg-amber-500/10 text-amber-500')">
+            <span
+              [class]="
+                'rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase ' +
+                (launchesService.apiStatus() === ApiStatus.ONLINE
+                  ? 'bg-emerald-500/10 text-emerald-500'
+                  : launchesService.apiStatus() === ApiStatus.OFFLINE
+                    ? 'bg-rose-500/10 text-rose-500'
+                    : 'bg-amber-500/10 text-amber-500')
+              "
+            >
               {{ launchesService.apiStatus() }}
             </span>
           </div>
-          <p class="text-sm text-mission-ink/60">
-            Connectivity to the SpaceX Launches endpoint. Monitors availability of mission history and telemetry.
+          <p class="text-mission-ink/60 text-sm">
+            Connectivity to the SpaceX Launches endpoint. Monitors availability of mission history
+            and telemetry.
           </p>
-          <div class="flex items-center gap-2 text-xs font-mono text-mission-ink/40">
-            <mat-icon class="text-[14px] w-auto h-auto">cloud_queue</mat-icon>
+          <div class="text-mission-ink/40 flex items-center gap-2 font-mono text-xs">
+            <mat-icon class="h-auto w-auto text-[14px]">cloud_queue</mat-icon>
             ENDPOINT: /launches
           </div>
         </div>
 
         <!-- Node Health Card -->
-        <div class="bg-mission-ink/5 border border-mission-line p-6 rounded-xl flex flex-col gap-4">
+        <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
           <div class="flex items-center justify-between">
             <h3 class="font-display text-xl font-semibold">Telemetry Node</h3>
-            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-widest">
+            <span
+              class="rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-500 uppercase"
+            >
               Operational
             </span>
           </div>
-          <p class="text-sm text-mission-ink/60">
-            Internal application state and signal processing. All systems are functioning within normal parameters.
+          <p class="text-mission-ink/60 text-sm">
+            Internal application state and signal processing. All systems are functioning within
+            normal parameters.
           </p>
-          <div class="flex items-center gap-2 text-xs font-mono text-mission-ink/40">
-            <mat-icon class="text-[14px] w-auto h-auto">memory</mat-icon>
+          <div class="text-mission-ink/40 flex items-center gap-2 font-mono text-xs">
+            <mat-icon class="h-auto w-auto text-[14px]">memory</mat-icon>
             VERSION: 3.1.0-STABLE
           </div>
         </div>
       </div>
 
       <!-- External Links -->
-      <section class="flex flex-col gap-4 mt-4">
+      <section class="mt-4 flex flex-col gap-4">
         <h3 class="font-display text-lg font-semibold">External Resources</h3>
         <div class="flex flex-col gap-2">
-          <a href="https://twitter.com/spacex" target="_blank" class="flex items-center justify-between p-4 bg-mission-ink/5 hover:bg-mission-ink/10 border border-mission-line rounded-lg transition-colors group">
+          <a
+            href="https://twitter.com/spacex"
+            target="_blank"
+            class="bg-mission-ink/5 hover:bg-mission-ink/10 border-mission-line group flex items-center justify-between rounded-lg border p-4 transition-colors"
+          >
             <div class="flex items-center gap-3">
               <mat-icon class="text-mission-accent">campaign</mat-icon>
               <span class="font-medium">Official SpaceX Updates</span>
             </div>
-            <mat-icon class="text-mission-ink/20 group-hover:text-mission-ink transition-colors">open_in_new</mat-icon>
+            <mat-icon class="text-mission-ink/20 group-hover:text-mission-ink transition-colors"
+              >open_in_new</mat-icon
+            >
           </a>
-          <a href="https://www.spacex.com/launches/" target="_blank" class="flex items-center justify-between p-4 bg-mission-ink/5 hover:bg-mission-ink/10 border border-mission-line rounded-lg transition-colors group">
+          <a
+            href="https://www.spacex.com/launches/"
+            target="_blank"
+            class="bg-mission-ink/5 hover:bg-mission-ink/10 border-mission-line group flex items-center justify-between rounded-lg border p-4 transition-colors"
+          >
             <div class="flex items-center gap-3">
               <mat-icon class="text-mission-accent">rocket</mat-icon>
               <span class="font-medium">Live Mission Dashboard</span>
             </div>
-            <mat-icon class="text-mission-ink/20 group-hover:text-mission-ink transition-colors">open_in_new</mat-icon>
+            <mat-icon class="text-mission-ink/20 group-hover:text-mission-ink transition-colors"
+              >open_in_new</mat-icon
+            >
           </a>
         </div>
       </section>
@@ -106,21 +137,22 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
       </div>
     </div>
   `,
-  styles: [`
-    :host {
-      display: block;
-      min-height: 100vh;
-      background-color: var(--bg);
-      color: var(--ink);
-    }
-  `]
+  styles: [
+    `
+      :host {
+        display: block;
+        min-height: 100vh;
+        background-color: var(--bg);
+        color: var(--ink);
+      }
+    `,
+  ],
 })
 export class SystemStatus implements OnInit {
-
   protected ApiStatus = ApiStatus;
   protected launchpadService = inject(Launchpads);
   protected launchesService = inject(Launches);
-  
+
   ngOnInit() {
     // Refresh status on load
     this.launchpadService.getLaunchpads().subscribe();

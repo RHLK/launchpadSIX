@@ -1,5 +1,4 @@
 export const environment = {
-    production: false,
-    spacexApiUrl: 'https://api.spacexdata.com/latest'
-  };
-  
+  production: false,
+  spacexApiUrl: 'https://api.spacexdata.com/latest',
+};

@@ -8,7 +8,7 @@ import { environment } from '../../../environment/environment';
  * Automatically prepends the base URL from the environment configuration.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SpaceXClient {
   private http = inject(HttpClient);

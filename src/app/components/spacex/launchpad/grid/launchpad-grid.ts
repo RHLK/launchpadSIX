@@ -1,48 +1,42 @@
 import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
-import { CommonModule  } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Launchpad } from '../../../../model/spacex/launchpad.model';
 import { Launchpads } from '../../../../services/spacex/launchpads';
 import { CellClickedEvent, ColDef, ICellRendererParams } from 'ag-grid-community';
-import { DataGrid } from "../../../grid/data-grid";
+import { DataGrid } from '../../../grid/data-grid';
 
-    
 /**
  * SpaceX Launchpad Explorer Component
  * This component provides a real-time dashboard for exploring SpaceX launch facilities.
- * It uses AG Grid for data display, Angular Signals for state management, and 
+ * It uses AG Grid for data display, Angular Signals for state management, and
  * Material Design components for UI elements.
  */
 @Component({
   selector: 'app-launchpad-grid',
-  imports: [
-    CommonModule,
-    DataGrid
-],
+  imports: [CommonModule, DataGrid],
   template: `
-          <app-data-grid
-          [columnDefs]="colDefs"
-          [pageSize]="pageSize()"
-          [loading]="launchpadService.loading()"
-          (gridReady)="onGridReady()"
-          [rowData]="rowData"
-          (cellClicked)="onCellClicked($event)"
-        >
-        </app-data-grid>
-        
+    <app-data-grid
+      [columnDefs]="colDefs"
+      [pageSize]="pageSize()"
+      [loading]="launchpadService.loading()"
+      (gridReady)="onGridReady()"
+      [rowData]="rowData"
+      (cellClicked)="onCellClicked($event)"
+    >
+    </app-data-grid>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LaunchpadGrid {
-
   protected launchpadService = inject(Launchpads);
-    
+
   // Row Data: The data to be displayed.
   rowData: Launchpad[] = [];
 
   pageSize = signal(5);
 
   selectedLaunchpad = signal<Launchpad | null>(null);
-  
+
   /**
    * AG Grid Column Definitions
    * Defines the structure, styling, and custom rendering for the grid columns.
@@ -59,30 +53,30 @@ export class LaunchpadGrid {
           <span class="text-xs text-mission-ink/60 font-mono">${params.data?.locality}</span>
         </div>
       `,
-      autoHeight: true
+      autoHeight: true,
     },
     {
       field: 'region',
       headerName: 'Region',
       width: 150,
-      cellClass: 'font-mono text-xs', 
-      filter: 'agSetColumnFilter'
+      cellClass: 'font-mono text-xs',
+      filter: 'agSetColumnFilter',
     },
     {
-        field: 'locality',
-        headerName: 'Locality',
-        width: 150,
-        cellClass: 'font-mono text-xs', 
-        filter: 'agSetColumnFilter'
-      },
-   {
+      field: 'locality',
+      headerName: 'Locality',
+      width: 150,
+      cellClass: 'font-mono text-xs',
+      filter: 'agSetColumnFilter',
+    },
+    {
       field: 'status',
       headerName: 'Status',
       width: 120,
       cellRenderer: (params: ICellRendererParams<Launchpad>) => {
         const color = params.value === 'active' ? 'text-emerald-500' : 'text-amber-500';
         return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${params.value}</span>`;
-      }
+      },
     },
     {
       headerName: 'Launches',
@@ -99,8 +93,8 @@ export class LaunchpadGrid {
             <span class="font-mono text-xs pointer-events-none">${count}</span>
         </button>
         `;
-      }
-    }
+      },
+    },
   ];
 
   cellClicked = output<CellClickedEvent>();
@@ -116,7 +110,9 @@ export class LaunchpadGrid {
   onGridReady() {
     console.log('Launchpad Grid Ready');
     // Force a refresh if data is already loaded
-    this.launchpadService.getLaunchpads().subscribe((data) => {this.rowData = data; console.log(data);});
+    this.launchpadService.getLaunchpads().subscribe((data) => {
+      this.rowData = data;
+      console.log(data);
+    });
   }
-
 }

@@ -3,16 +3,16 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 /* Tailwind CSS Initialization */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Import Extracted Component Layers */
-@import "./layout.css";
+@import './layout.css';
 
 /* Custom Mission Control Theme Configuration */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Space Grotesk', sans-serif;
 
   --color-mission-bg: #0a0a0b;
   --color-mission-header-bg: #141416;
