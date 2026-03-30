@@ -3,8 +3,89 @@
   height: 100%;
 }
 
-::ng-deep .ag-theme-quartz-dark {
-  --ag-font-family: 'Inter', sans-serif;
-  --ag-header-foreground-color: rgba(255, 255, 255, 0.5);
-  --ag-header-column-separator-display: none;
+.mission-field {
+  margin-bottom: 0;
+}
+
+::ng-deep .mission-field .mat-mdc-form-field-flex {
+  background-color: #1a1a1e !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 4px !important;
+  padding: 0 8px !important;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .mission-field.mat-focused .mat-mdc-form-field-flex {
+  border-color: var(--color-mission-accent) !important;
+  background-color: #2a2a30 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+}
+
+::ng-deep .mission-field .mat-mdc-form-field-outline {
+  display: none !important;
+}
+
+::ng-deep .mission-field .mat-mdc-input-element,
+::ng-deep .mission-field .mat-mdc-select-value {
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-family: var(--font-mono) !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mission-field .mat-mdc-select-value-text {
+  color: #ffffff !important;
+}
+
+::ng-deep .mission-field input::placeholder,
+::ng-deep .mission-field .mat-mdc-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+::ng-deep .mission-field .mat-mdc-form-field-infix {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  min-height: auto !important;
+  border-top: none !important;
+}
+
+::ng-deep .mat-mdc-select-arrow svg {
+  fill: #ffffff !important;
+  opacity: 0.9;
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label,
+::ng-deep .mat-mdc-paginator-range-label {
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+::ng-deep .mat-sort-header-arrow {
+  color: var(--color-mission-accent) !important;
+}
+
+::ng-deep .mat-mdc-header-cell {
+  padding: 1rem !important;
+}
+
+::ng-deep .mat-mdc-cell {
+  padding: 0.75rem 1rem !important;
+  vertical-align: middle !important;
+}
+
+.filter-row ::ng-deep .mat-mdc-header-cell {
+  padding: 0.25rem 0.5rem !important;
+  border-bottom-width: 1px !important;
+}
+
+.filter-row .mission-field {
+  margin-bottom: 0;
 }

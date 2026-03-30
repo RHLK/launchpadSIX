@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
-    spacexApiUrl: 'ADD PROD API URL HERE',
+    production: false,
+    spacexApiUrl: 'https://api.spacexdata.com/latest',
   };
   

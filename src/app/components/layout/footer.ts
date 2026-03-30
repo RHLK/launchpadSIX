@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
     <footer class="mission-footer">
       <div class="mission-footer-container">
         <div class="mission-footer-bottom">
-          <p class="mission-footer-copy">© 2026 SpaceX Mission Control </p>
+          <p class="mission-footer-copy">© 2026 SpaceX Mission Control</p>
           <div class="mission-footer-links">
             <a
               href="https://github.com/r-spacex/SpaceX-API"

@@ -42,7 +42,7 @@
           },
           "configurations": {
             "production": {
-               "budgets": [
+              "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "1.5MB",

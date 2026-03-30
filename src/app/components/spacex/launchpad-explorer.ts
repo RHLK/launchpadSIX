@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Launchpad } from '../../model/spacex/launchpad.model';
 import { Launchpads } from '../../services/spacex/launchpads';
 import { Launches } from '../../services/spacex/launches';
-import { CellClickedEvent } from 'ag-grid-community';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -161,10 +160,9 @@ export class LaunchpadExplorer {
    * Cell Click Event Handler
    * Specifically handles the "View History" button in the Actions column.
    */
-  onCellClicked(event: CellClickedEvent) {
-    const target = event.event?.target as HTMLElement;
-    if (target && target.classList.contains('view-launches-btn')) {
-      const launchpad = event.data as Launchpad;
+  onCellClicked(event: { data: Launchpad; key: string; event: MouseEvent }) {
+    if (event.key === 'launches') {
+      const launchpad = event.data;
       this.selectedLaunchpad.set(launchpad);
 
       // Fetch specific launches for this launchpad using the query endpoint

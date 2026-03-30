@@ -63,6 +63,6 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
 ## Technical Stack
 
 - **Framework**: Angular (Zoneless)
-- **Grid**: Ag-Grid Community
+- **Grid**: Material table
 - **Styling**: Tailwind CSS 4.0
 - **Icons**: Material Icons
