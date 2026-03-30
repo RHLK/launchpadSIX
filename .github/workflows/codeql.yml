@@ -86,9 +86,16 @@ jobs:
       - name: Run manual build steps install dependencies and build
         if: matrix.build-mode == 'none'
         shell: bash
+        env:
+          # Map your GitHub Secrets to environment variables for this step
+          SPACEX_API_URL: ${{ secrets.SPACEX_API_URL }}
         run: |
           npm install
-          npm run build
+
+          # Inject the SpaceX API URL into the environment configuration
+          # We use '|' as a delimiter because the URL contains slashes '/'
+          sed -i "s|'https://api.spacexdata.com/latest'|'$SPACEX_API_URL'|g" src/environments/environment.ts
+          npm run production
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
