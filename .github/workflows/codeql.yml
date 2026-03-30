@@ -94,7 +94,7 @@ jobs:
 
           # Inject the SpaceX API URL into the environment configuration
           # We use '|' as a delimiter because the URL contains slashes '/'
-          sed -i "s|'https://api.spacexdata.com/latest'|'$SPACEX_API_URL'|g" src/environments/environment.ts
+          sed -i "s|'https://api.spacexdata.com/latest'|'$SPACEX_API_URL'|g" src/environment/environment.ts
           npm run production
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
