@@ -25,10 +25,10 @@ jobs:
       - name: Inject Secrets
         run: |
           # Replace the SpaceX API URL in environment.ts if needed
-           sed -i "s|'https://api.spacexdata.com/latest'|'${{ secrets.SPACEX_API_URL }}'|g" src/environments/environment.ts
+           sed -i "s|'https://api.spacexdata.com/latest'|'${{ secrets.SPACEX_API_URL }}'|g" src/environment/environment.ts
 
       - name: Build
-        run: npm run build -- --configuration production
+        run: npm run production
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
