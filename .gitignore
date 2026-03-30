@@ -5,6 +5,7 @@
 !.env.example
 src/environment/*
 !src/environment/environment.example.ts
+!src/environment/environment.prod.ts
 
 # Compiled outputs
 /dist
