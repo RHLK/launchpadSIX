@@ -34,7 +34,7 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    npm run dev
    ```
 
-   The application will be available at `http://localhost:3000`.
+   The application will be available at `http://localhost:4200`.
 
 4. **Build for Production**:
    ```bash
