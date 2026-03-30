@@ -87,9 +87,8 @@ jobs:
         if: matrix.build-mode == 'none'
         shell: bash
         run: |
-          echo ' npm install'
-          echo ' npm run build'
-          exit 1
+          npm install
+          npm run build
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
