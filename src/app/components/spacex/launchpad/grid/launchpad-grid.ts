@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, computed, inject, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Launchpad } from '../../../../model/spacex/launchpad.model';
 import { Launchpads } from '../../../../services/spacex/launchpads';
-import { CellClickedEvent, ColDef, ICellRendererParams } from 'ag-grid-community';
-import { DataGrid } from '../../../grid/data-grid';
+import { DataGrid, DataGridColDef } from '../../../grid/data-grid';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * SpaceX Launchpad Explorer Component
@@ -13,13 +13,28 @@ import { DataGrid } from '../../../grid/data-grid';
  */
 @Component({
   selector: 'app-launchpad-grid',
-  imports: [CommonModule, DataGrid],
+  imports: [CommonModule, DataGrid, MatIconModule],
   template: `
+
+       <!-- Templates -->
+       <ng-template #launchesTemplate let-data>
+        @if (data.launches?.length > 0) {
+          <div
+            class="view-launches-btn flex items-center gap-1 text-mission-accent hover:text-mission-accent/80 transition-colors cursor-pointer"
+            title="Select a facility to view its mission history"
+          >
+            <mat-icon class="!text-[16px] pointer-events-none">rocket_launch</mat-icon>
+            <span class="font-mono text-xs pointer-events-none">{{ data.launches.length }}</span>
+          </div>
+        } @else {
+          <span class="text-mission-ink/20 font-mono text-xs">0</span>
+        }
+      </ng-template>
+
     <app-data-grid
-      [columnDefs]="colDefs"
+      [columnDefs]="colDefs()"
       [pageSize]="pageSize()"
       [loading]="launchpadService.loading()"
-      (gridReady)="onGridReady()"
       [rowData]="rowData"
       (cellClicked)="onCellClicked($event)"
     >
@@ -36,83 +51,82 @@ export class LaunchpadGrid {
   pageSize = signal(5);
 
   selectedLaunchpad = signal<Launchpad | null>(null);
+  launchesTemplate = viewChild<TemplateRef<any>>('launchesTemplate');
 
   /**
-   * AG Grid Column Definitions
-   * Defines the structure, styling, and custom rendering for the grid columns.
+   * Material Table Column Definitions for Launchpads
    */
-  colDefs: ColDef[] = [
-    {
-      field: 'name',
-      headerName: 'Facility Name',
-      filter: 'agSetColumnFilter',
-      flex: 1,
-      cellRenderer: (params: ICellRendererParams<Launchpad>) => `
-        <div class="flex flex-col py-2">
-          <span class="font-bold text-mission-ink/70">${params.value}</span>
-          <span class="text-xs text-mission-ink/60 font-mono">${params.data?.locality}</span>
-        </div>
-      `,
-      autoHeight: true,
-    },
-    {
-      field: 'region',
-      headerName: 'Region',
-      width: 150,
-      cellClass: 'font-mono text-xs',
-      filter: 'agSetColumnFilter',
-    },
-    {
-      field: 'locality',
-      headerName: 'Locality',
-      width: 150,
-      cellClass: 'font-mono text-xs',
-      filter: 'agSetColumnFilter',
-    },
-    {
-      field: 'status',
-      headerName: 'Status',
-      width: 120,
-      cellRenderer: (params: ICellRendererParams<Launchpad>) => {
-        const color = params.value === 'active' ? 'text-emerald-500' : 'text-amber-500';
-        return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${params.value}</span>`;
+  colDefs = computed<DataGridColDef<Launchpad>[]>(() => {
+    const data = this.launchpadService.launchpads();
+    const template = this.launchesTemplate();
+    console.log(template);
+    //if (!template) return [];
+
+    // Extract unique regions from data
+    const regions = Array.from(new Set(data.map((d) => d.region).filter(Boolean)))
+      .sort()
+      .map((r) => ({
+        label: r
+          .split(/[\s_-]+/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' '),
+        value: r.toLowerCase(),
+      }));
+
+    // Extract unique statuses from data
+    const statuses = Array.from(new Set(data.map((d) => d.status).filter(Boolean)))
+      .sort()
+      .map((s) => ({
+        label: s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(),
+        value: s.toLowerCase(),
+      }));
+
+    return [
+      {
+        key: 'name',
+        header: 'Facility Name',
+        cellRenderer: (data: Launchpad) => `
+          <div class="flex flex-col py-1">
+            <span class="font-bold text-mission-ink">${data.name}</span>
+            <span class="text-[10px] text-mission-ink/40 font-mono">${data.locality}</span>
+          </div>
+        `,
       },
-    },
-    {
-      headerName: 'Launches',
-      valueGetter: (params) => params.data?.launches?.length || 0,
-      width: 120,
-      cellRenderer: (params: ICellRendererParams<Launchpad>) => {
-        const count = params.data?.launches?.length || 0;
-        if (count === 0) return '<span class="text-mission-ink/20 font-mono text-xs">0</span>';
-        return `
-        <button 
-            class="view-launches-btn flex items-center justify-center gap-1 w-full h-full text-mission-accent hover:text-mission-accent/80 transition-colors cursor-pointer"
-            title="Select a facility to view its launches history">
-            <span class="material-icons text-[18px] pointer-events-none">rocket_launch</span>
-            <span class="font-mono text-xs pointer-events-none">${count}</span>
-        </button>
-        `;
+      {
+        key: 'region',
+        header: 'Region',
+        class: 'font-mono text-xs',
+        filterOptions: regions,
       },
-    },
-  ];
+      {
+        key: 'status',
+        header: 'Status',
+        filterOptions: statuses,
+        cellRenderer: (data: Launchpad) => {
+          const color = data.status === 'active' ? 'text-emerald-500' : 'text-amber-500';
+          return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${data.status}</span>`;
+        },
+      },
+      {
+        key: 'launches',
+        header: 'Missions',
+        filterable: false,
+        cellTemplate: template,
+      },
+    ];
+  });
 
-  cellClicked = output<CellClickedEvent>();
-
-  onCellClicked(params: CellClickedEvent) {
-    this.cellClicked.emit(params);
-  }
-
-  /**
-   * Grid Ready Event Handler
-   * Captures the Grid API and ensures data is bound if it arrived before the grid was ready.
-   */
-  onGridReady() {
-    console.log('Launchpad Grid Ready');
-    // Force a refresh if data is already loaded
+  constructor() {
     this.launchpadService.getLaunchpads().subscribe((data) => {
       this.rowData = data;
       console.log(data);
     });
   }
+
+  cellClicked = output<any>();
+
+  onCellClicked(params: any) {
+    this.cellClicked.emit(params);
+  }
+
 }

@@ -3,118 +3,256 @@ import {
   Component,
   input,
   output,
-  inject,
-  PLATFORM_ID,
+  viewChild,
+  effect,
+  computed,
+  TemplateRef,
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AgGridAngular } from 'ag-grid-angular';
-import {
-  CellClickedEvent,
-  ColDef,
-  GridApi,
-  GridReadyEvent,
-  Theme,
-  themeQuartz,
-} from 'ag-grid-community';
+import { CommonModule } from '@angular/common';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
-
+/**
+ * Column definition for the DataGrid component.
+ */
+export interface DataGridColDef<T> {
+  key: string;
+  header: string;
+  cellRenderer?: (data: T) => string;
+  cellTemplate?: TemplateRef<any>;
+  width?: string;
+  class?: string;
+  filterable?: boolean;
+  filterOptions?: { label: string; value: string }[];
+}
 /**
  * Shared Data Grid Component
  * A reusable wrapper for AG Grid with built-in loading states and consistent styling.
  */
 @Component({
   selector: 'app-data-grid',
-  imports: [CommonModule, AgGridAngular, MatProgressSpinnerModule],
+  imports: [CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatSelectModule,
+    FormsModule,],
   template: `
-    <div class="relative h-full min-h-[550px] flex-1">
+     <div class="relative flex h-full min-h-[400px] flex-1 flex-col gap-4">
       <!-- Loading Overlay -->
       @if (loading()) {
         <div
           class="bg-mission-bg/50 absolute inset-0 z-10 flex items-center justify-center rounded-xl backdrop-blur-sm"
         >
-          <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
+          <mat-progress-spinner mode="indeterminate" diameter="48" />
         </div>
       }
 
-      <!-- Grid Instance -->
-      @if (isBrowser) {
-        <ag-grid-angular
-          style="width: 100%; height: 550px;"
-          class="border-mission-line h-full w-full overflow-hidden rounded-xl border"
-          [theme]="gridTheme()"
-          [rowData]="rowData()"
-          [columnDefs]="columnDefs()"
-          [pagination]="true"
-          [paginationPageSize]="pageSize()"
-          [paginationPageSizeSelector]="paginationPageSizeSelector()"
-          (gridReady)="onGridReady($event)"
-          (cellClicked)="onCellClicked($event)"
-        >
-        </ag-grid-angular>
-      } @else {
-        <!-- SSR Fallback -->
-        <div
-          class="border-mission-line bg-mission-line/5 flex h-full w-full items-center justify-center rounded-xl border"
-        >
-          <span class="text-mission-ink/20 font-mono text-sm tracking-widest uppercase"
-            >Initializing Telemetry...</span
-          >
-        </div>
-      }
+      <!-- Table Container -->
+      <div class="border-mission-line flex-1 overflow-auto rounded-t-xl border border-b-0 bg-white/5">
+        <table mat-table [dataSource]="dataSource" matSort class="w-full bg-transparent!">
+          @for (col of columnDefs(); track col.key) {
+            <ng-container [matColumnDef]="col.key">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="bg-mission-header-bg! border-mission-line! text-mission-ink font-display! text-xs! font-bold! tracking-widest uppercase!"
+                [style.width]="col.width"
+              >
+                {{ col.header }}
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                class="border-mission-line! text-mission-ink/80 font-sans! text-sm!"
+                [ngClass]="col.class"
+                (click)="onRowClick(element, col.key, $event)"
+              >
+                @if (col.cellTemplate) {
+                  <ng-container
+                    [ngTemplateOutlet]="col.cellTemplate"
+                    [ngTemplateOutletContext]="{ $implicit: element }"
+                  />
+                } @else if (col.cellRenderer) {
+                  <div [innerHTML]="col.cellRenderer(element)"></div>
+                } @else {
+                  {{ element[col.key] }}
+                }
+              </td>
+            </ng-container>
+
+            <!-- Filter Column Definition -->
+            <ng-container [matColumnDef]="col.key + '-filter'">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="bg-mission-header-bg! border-mission-line! p-2!"
+              >
+                @if (showFilter() && col.filterable !== false) {
+                  <mat-form-field
+                    class="mission-field w-full"
+                    appearance="outline"
+                    subscriptSizing="dynamic"
+                  >
+                    @if (col.filterOptions) {
+                      <mat-select
+                        (selectionChange)="applyColumnFilter(col.key, $event.value)"
+                        placeholder="All"
+                        class="font-mono text-[10px]"
+                      >
+                        <mat-option [value]="">All</mat-option>
+                        @for (opt of col.filterOptions; track opt.value) {
+                          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                        }
+                      </mat-select>
+                    } @else {
+                      <input
+                        matInput
+                        (keyup)="applyColumnFilter(col.key, $any($event.target).value)"
+                        placeholder="Filter..."
+                        class="font-mono text-[10px]"
+                      />
+                    }
+                  </mat-form-field>
+                }
+              </th>
+            </ng-container>
+          }
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns(); sticky: true"></tr>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="filterColumns(); sticky: true"
+            class="filter-row"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns()"
+            class="hover:bg-mission-accent-muted/20 transition-colors"
+          ></tr>
+
+          <!-- No Data Row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td
+              class="mat-cell border-mission-line! p-8 text-center"
+              [attr.colspan]="displayedColumns().length"
+            >
+              @if (!loading()) {
+                <span class="text-mission-ink/20 font-mono text-sm tracking-widest uppercase"
+                  >No mission data available</span
+                >
+              }
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator
+        [pageSize]="pageSize()"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        class="bg-mission-header-bg! border-mission-line! text-mission-ink! rounded-b-xl border"
+        aria-label="Select page of missions"
+      />
     </div>
   `,
   styleUrl: './data-grid.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGrid<T = unknown> {
-  private platformId = inject(PLATFORM_ID);
-  isBrowser = isPlatformBrowser(this.platformId);
+ // Inputs using the new signal-based input() API
+ rowData = input<T[]>([]);
+ columnDefs = input<DataGridColDef<T>[]>([]);
+ pageSize = input<number>(10);
+ loading = input<boolean>(false);
+ showFilter = input<boolean>(true);
 
-  private gridApi!: GridApi;
-  // Inputs using the new signal-based input() API
-  rowData = input<T[]>([]);
-  columnDefs = input<ColDef[]>([]);
-  pageSize = input<number>(10);
-  loading = input<boolean>(false);
+ // Outputs
+ cellClicked = output<{ data: T; key: string; event: MouseEvent }>();
 
-  // Use the new Theming API with CSS variables from styles.css
-  gridTheme = input<Theme>(
-    themeQuartz.withParams({
-      backgroundColor: 'var(--color-mission-bg)',
-      headerBackgroundColor: 'var(--color-mission-header-bg)',
-      oddRowBackgroundColor: 'var(--color-mission-odd-row-bg)',
-      borderColor: 'var(--color-mission-line)',
-      rowHoverColor: 'var(--color-mission-accent-muted)',
-      selectedRowBackgroundColor: 'var(--color-mission-accent-selected)',
-      fontFamily: 'var(--font-sans)',
-      headerTextColor: 'var(--color-mission-ink)',
-      textColor: 'var(--color-mission-ink)',
-    }),
-  );
+ // View Children
+ paginator = viewChild(MatPaginator);
+ sort = viewChild(MatSort);
 
-  // allows the user to select the page size from a predefined list of page sizes
-  paginationPageSizeSelector = input<number[]>([5, 10, 20, 50, 100]);
+ // Data Source
+ dataSource = new MatTableDataSource<T>([]);
+ private columnFilterMap = new Map<string, string>();
 
-  // Outputs using the new signal-based output() API
-  gridReady = output<GridReadyEvent>();
-  cellClicked = output<CellClickedEvent>();
+ // Computed columns
+ displayedColumns = computed(() => this.columnDefs().map((c) => c.key));
+ filterColumns = computed(() => this.columnDefs().map((c) => c.key + '-filter'));
 
-  onGridReady(params: GridReadyEvent) {
-    this.gridReady.emit(params);
-  }
+ constructor() {
+   // Configure filter predicate with access to column definitions for smart matching
+   this.dataSource.filterPredicate = (data: T, _filter: string) => {
+     const colDefs = this.columnDefs();
+     
+     // Check every active filter in our map
+     for (const [key, searchTerm] of this.columnFilterMap.entries()) {
+       if (!searchTerm) continue;
 
-  onCellClicked(params: CellClickedEvent) {
-    this.cellClicked.emit(params);
-  }
-  onFilterChange(event: Event) {
-    const val = (event.target as HTMLInputElement).value;
-    this.gridApi.setGridOption('quickFilterText', val);
-  }
+       const value = (data as any)[key];
+       const dataValue = String(value ?? '').toLowerCase();
+       
+       // Find the column definition to determine matching strategy
+       const colDef = colDefs.find((c) => c.key === key);
 
-  onPageSizeChange() {
-    if (this.gridApi) {
-      this.gridApi.setGridOption('paginationPageSize', this.pageSize());
-    }
-  }
+       // Use exact match for columns with predefined options (e.g., status, success)
+       if (colDef?.filterOptions) {
+         if (dataValue !== searchTerm) return false;
+       } else {
+         // Use partial match for text inputs
+         if (!dataValue.includes(searchTerm)) return false;
+       }
+     }
+     return true;
+   };
+
+   // Sync rowData with dataSource
+   effect(() => {
+     const data = this.rowData();
+     this.dataSource.data = data;
+     // Re-trigger filter when data changes by re-assigning the filter string
+     const currentFilter = this.dataSource.filter;
+     this.dataSource.filter = '';
+     this.dataSource.filter = currentFilter || ' ';
+   });
+
+   // Sync paginator and sort
+   effect(() => {
+     const p = this.paginator();
+     const s = this.sort();
+     if (p) this.dataSource.paginator = p;
+     if (s) this.dataSource.sort = s;
+   });
+ }
+
+ applyColumnFilter(column: string, value: any) {
+   const filterValue = String(value ?? '').trim().toLowerCase();
+   this.columnFilterMap.set(column, filterValue);
+   
+   // Setting a new filter string triggers the filterPredicate
+   // We use a timestamp to ensure the value is always different, forcing a re-filter
+   this.dataSource.filter = `filter-${Date.now()}`;
+
+   if (this.dataSource.paginator) {
+     this.dataSource.paginator.firstPage();
+   }
+ }
+
+ onRowClick(data: T, key: string, event: MouseEvent) {
+   this.cellClicked.emit({ data, key, event });
+ }
 }
