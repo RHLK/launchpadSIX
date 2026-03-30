@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, computed, inject, output, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  TemplateRef,
+  computed,
+  inject,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Launchpad } from '../../../../model/spacex/launchpad.model';
 import { Launchpads } from '../../../../services/spacex/launchpads';
@@ -15,21 +24,20 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-launchpad-grid',
   imports: [CommonModule, DataGrid, MatIconModule],
   template: `
-
-       <!-- Templates -->
-       <ng-template #launchesTemplate let-data>
-        @if (data.launches?.length > 0) {
-          <div
-            class="view-launches-btn flex items-center gap-1 text-mission-accent hover:text-mission-accent/80 transition-colors cursor-pointer"
-            title="Select a facility to view its mission history"
-          >
-            <mat-icon class="!text-[16px] pointer-events-none">rocket_launch</mat-icon>
-            <span class="font-mono text-xs pointer-events-none">{{ data.launches.length }}</span>
-          </div>
-        } @else {
-          <span class="text-mission-ink/20 font-mono text-xs">0</span>
-        }
-      </ng-template>
+    <!-- Templates -->
+    <ng-template #launchesTemplate let-data>
+      @if (data.launches?.length > 0) {
+        <div
+          class="view-launches-btn text-mission-accent hover:text-mission-accent/80 flex cursor-pointer items-center gap-1 transition-colors"
+          title="Select a facility to view its mission history"
+        >
+          <mat-icon class="pointer-events-none !text-[16px]">rocket_launch</mat-icon>
+          <span class="pointer-events-none font-mono text-xs">{{ data.launches.length }}</span>
+        </div>
+      } @else {
+        <span class="text-mission-ink/20 font-mono text-xs">0</span>
+      }
+    </ng-template>
 
     <app-data-grid
       [columnDefs]="colDefs()"
@@ -57,10 +65,11 @@ export class LaunchpadGrid {
    * Material Table Column Definitions for Launchpads
    */
   colDefs = computed<DataGridColDef<Launchpad>[]>(() => {
+
     const data = this.launchpadService.launchpads();
     const template = this.launchesTemplate();
-    console.log(template);
-    //if (!template) return [];
+    
+    if (!template) return [];
 
     // Extract unique regions from data
     const regions = Array.from(new Set(data.map((d) => d.region).filter(Boolean)))
@@ -119,7 +128,6 @@ export class LaunchpadGrid {
   constructor() {
     this.launchpadService.getLaunchpads().subscribe((data) => {
       this.rowData = data;
-      console.log(data);
     });
   }
 
@@ -128,5 +136,4 @@ export class LaunchpadGrid {
   onCellClicked(params: any) {
     this.cellClicked.emit(params);
   }
-
 }

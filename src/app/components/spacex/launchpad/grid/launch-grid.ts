@@ -28,27 +28,27 @@ import { Launch } from '../../../../model/spacex/launch.model';
 })
 export class LaunchGrid {
   protected launchesService = inject(Launches);
- /**
+  /**
    * Material Table Column Definitions for Launches
    */
- launchColDefs = computed<DataGridColDef<Launch>[]>(() => {
-  const data = this.launchesService.launches();
+  launchColDefs = computed<DataGridColDef<Launch>[]>(() => {
+    const data = this.launchesService.launches();
 
-  // Extract unique outcomes (success/failure)
-  const outcomes = Array.from(new Set(data.map((d) => d.success)))
-    .filter((s) => s !== undefined && s !== null)
-    .map((s) => ({ label: s ? 'Success' : 'Failure', value: String(s) }));
+    // Extract unique outcomes (success/failure)
+    const outcomes = Array.from(new Set(data.map((d) => d.success)))
+      .filter((s) => s !== undefined && s !== null)
+      .map((s) => ({ label: s ? 'Success' : 'Failure', value: String(s) }));
 
-  return [
-    {
-      key: 'flight_number',
-      header: 'Flight #',
-      class: 'font-mono text-xs',
-    },
-    {
-      key: 'name',
-      header: 'Mission Name',
-      cellRenderer: (data: Launch) => `
+    return [
+      {
+        key: 'flight_number',
+        header: 'Flight #',
+        class: 'font-mono text-xs',
+      },
+      {
+        key: 'name',
+        header: 'Mission Name',
+        cellRenderer: (data: Launch) => `
         <div class="flex items-center gap-3 py-1">
           ${data.links.patch.small ? `<img src="${data.links.patch.small}" class="w-6 h-6 object-contain" referrerpolicy="no-referrer">` : ''}
           <div class="flex flex-col">
@@ -57,28 +57,28 @@ export class LaunchGrid {
           </div>
         </div>
       `,
-    },
-    {
-      key: 'success',
-      header: 'Outcome',
-      filterOptions: outcomes,
-      cellRenderer: (data: Launch) => {
-        const color = data.success ? 'text-emerald-500' : 'text-rose-500';
-        const label = data.success ? 'Success' : 'Failure';
-        return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${label}</span>`;
       },
-    },
-    {
-      key: 'details',
-      header: 'Mission Details',
-      cellRenderer: (data: Launch) => `
+      {
+        key: 'success',
+        header: 'Outcome',
+        filterOptions: outcomes,
+        cellRenderer: (data: Launch) => {
+          const color = data.success ? 'text-emerald-500' : 'text-rose-500';
+          const label = data.success ? 'Success' : 'Failure';
+          return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${label}</span>`;
+        },
+      },
+      {
+        key: 'details',
+        header: 'Mission Details',
+        cellRenderer: (data: Launch) => `
         <div class="flex items-center h-full py-1">
           <div class="text-xs text-mission-ink/60 italic line-clamp-1 leading-relaxed max-w-[300px]" title="${data.details || ''}">
             ${data.details || 'No mission details available.'}
           </div>
         </div>
       `,
-    },
-  ];
-});
+      },
+    ];
+  });
 }

@@ -75,7 +75,6 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
         </div>
       </section>
 
-
       <!-- Launches Grid Container -->
       @if (selectedLaunchpad()) {
         <section class="animate-in fade-in slide-in-from-bottom-4 flex flex-col gap-4 duration-500">
@@ -157,17 +156,19 @@ export class LaunchpadExplorer {
     console.log('LaunchpadExplorer: loaded...');
   }
 
-   /**
+  /**
    * Cell Click Event Handler
    * Specifically handles the "View History" button in the Actions column.
    */
-   onCellClicked(event: { data: Launchpad; key: string; event: MouseEvent }) {
+  onCellClicked(event: { data: Launchpad; key: string; event: MouseEvent }) {
     if (event.key === 'launches') {
       const launchpad = event.data;
       this.selectedLaunchpad.set(launchpad);
 
       // Fetch specific launches for this launchpad using the query endpoint
-      this.launchesService.queryLaunches({ launchpad: launchpad.id }, { pagination: false }).subscribe();
+      this.launchesService
+        .queryLaunches({ launchpad: launchpad.id }, { pagination: false })
+        .subscribe();
 
       // Scroll to launches grid
       setTimeout(() => {

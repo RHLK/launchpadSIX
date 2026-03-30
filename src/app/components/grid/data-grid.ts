@@ -7,6 +7,7 @@ import {
   effect,
   computed,
   TemplateRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -18,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 /**
  * Column definition for the DataGrid component.
@@ -38,7 +40,8 @@ export interface DataGridColDef<T> {
  */
 @Component({
   selector: 'app-data-grid',
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -47,9 +50,10 @@ export interface DataGridColDef<T> {
     MatFormFieldModule,
     MatIconModule,
     MatSelectModule,
-    FormsModule,],
+    FormsModule,
+  ],
   template: `
-     <div class="relative flex h-full min-h-[400px] flex-1 flex-col gap-4">
+    <div class="relative flex h-full min-h-[400px] flex-1 flex-col gap-4">
       <!-- Loading Overlay -->
       @if (loading()) {
         <div
@@ -60,7 +64,9 @@ export interface DataGridColDef<T> {
       }
 
       <!-- Table Container -->
-      <div class="border-mission-line flex-1 overflow-auto rounded-t-xl border border-b-0 bg-white/5">
+      <div
+        class="border-mission-line flex-1 overflow-auto rounded-t-xl border border-b-0 bg-white/5"
+      >
         <table mat-table [dataSource]="dataSource" matSort class="w-full bg-transparent!">
           @for (col of columnDefs(); track col.key) {
             <ng-container [matColumnDef]="col.key">
@@ -86,7 +92,7 @@ export interface DataGridColDef<T> {
                     [ngTemplateOutletContext]="{ $implicit: element }"
                   />
                 } @else if (col.cellRenderer) {
-                  <div [innerHTML]="col.cellRenderer(element)"></div>
+                  <div [innerHTML]="getSafeHtml(col, element)"></div>
                 } @else {
                   {{ element[col.key] }}
                 }
@@ -172,87 +178,96 @@ export interface DataGridColDef<T> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataGrid<T = unknown> {
- // Inputs using the new signal-based input() API
- rowData = input<T[]>([]);
- columnDefs = input<DataGridColDef<T>[]>([]);
- pageSize = input<number>(10);
- loading = input<boolean>(false);
- showFilter = input<boolean>(true);
+  private sanitizer = inject(DomSanitizer);
 
- // Outputs
- cellClicked = output<{ data: T; key: string; event: MouseEvent }>();
+  // Inputs using the new signal-based input() API
+  rowData = input<T[]>([]);
+  columnDefs = input<DataGridColDef<T>[]>([]);
+  pageSize = input<number>(10);
+  loading = input<boolean>(false);
+  showFilter = input<boolean>(true);
 
- // View Children
- paginator = viewChild(MatPaginator);
- sort = viewChild(MatSort);
+  // Outputs
+  cellClicked = output<{ data: T; key: string; event: MouseEvent }>();
 
- // Data Source
- dataSource = new MatTableDataSource<T>([]);
- private columnFilterMap = new Map<string, string>();
+  // View Children
+  paginator = viewChild(MatPaginator);
+  sort = viewChild(MatSort);
 
- // Computed columns
- displayedColumns = computed(() => this.columnDefs().map((c) => c.key));
- filterColumns = computed(() => this.columnDefs().map((c) => c.key + '-filter'));
+  // Data Source
+  dataSource = new MatTableDataSource<T>([]);
+  private columnFilterMap = new Map<string, string>();
 
- constructor() {
-   // Configure filter predicate with access to column definitions for smart matching
-   this.dataSource.filterPredicate = (data: T, _filter: string) => {
-     const colDefs = this.columnDefs();
-     
-     // Check every active filter in our map
-     for (const [key, searchTerm] of this.columnFilterMap.entries()) {
-       if (!searchTerm) continue;
+  // Computed columns
+  displayedColumns = computed(() => this.columnDefs().map((c) => c.key));
+  filterColumns = computed(() => this.columnDefs().map((c) => c.key + '-filter'));
 
-       const value = (data as any)[key];
-       const dataValue = String(value ?? '').toLowerCase();
-       
-       // Find the column definition to determine matching strategy
-       const colDef = colDefs.find((c) => c.key === key);
+  constructor() {
+    // Configure filter predicate with access to column definitions for smart matching
+    this.dataSource.filterPredicate = (data: T, _filter: string) => {
+      const colDefs = this.columnDefs();
 
-       // Use exact match for columns with predefined options (e.g., status, success)
-       if (colDef?.filterOptions) {
-         if (dataValue !== searchTerm) return false;
-       } else {
-         // Use partial match for text inputs
-         if (!dataValue.includes(searchTerm)) return false;
-       }
-     }
-     return true;
-   };
+      // Check every active filter in our map
+      for (const [key, searchTerm] of this.columnFilterMap.entries()) {
+        if (!searchTerm) continue;
 
-   // Sync rowData with dataSource
-   effect(() => {
-     const data = this.rowData();
-     this.dataSource.data = data;
-     // Re-trigger filter when data changes by re-assigning the filter string
-     const currentFilter = this.dataSource.filter;
-     this.dataSource.filter = '';
-     this.dataSource.filter = currentFilter || ' ';
-   });
+        const value = (data as any)[key];
+        const dataValue = String(value ?? '').toLowerCase();
 
-   // Sync paginator and sort
-   effect(() => {
-     const p = this.paginator();
-     const s = this.sort();
-     if (p) this.dataSource.paginator = p;
-     if (s) this.dataSource.sort = s;
-   });
- }
+        // Find the column definition to determine matching strategy
+        const colDef = colDefs.find((c) => c.key === key);
 
- applyColumnFilter(column: string, value: any) {
-   const filterValue = String(value ?? '').trim().toLowerCase();
-   this.columnFilterMap.set(column, filterValue);
-   
-   // Setting a new filter string triggers the filterPredicate
-   // We use a timestamp to ensure the value is always different, forcing a re-filter
-   this.dataSource.filter = `filter-${Date.now()}`;
+        // Use exact match for columns with predefined options (e.g., status, success)
+        if (colDef?.filterOptions) {
+          if (dataValue !== searchTerm) return false;
+        } else {
+          // Use partial match for text inputs
+          if (!dataValue.includes(searchTerm)) return false;
+        }
+      }
+      return true;
+    };
 
-   if (this.dataSource.paginator) {
-     this.dataSource.paginator.firstPage();
-   }
- }
+    // Sync rowData with dataSource
+    effect(() => {
+      const data = this.rowData();
+      this.dataSource.data = data;
+      // Re-trigger filter when data changes by re-assigning the filter string
+      const currentFilter = this.dataSource.filter;
+      this.dataSource.filter = '';
+      this.dataSource.filter = currentFilter || ' ';
+    });
 
- onRowClick(data: T, key: string, event: MouseEvent) {
-   this.cellClicked.emit({ data, key, event });
- }
+    // Sync paginator and sort
+    effect(() => {
+      const p = this.paginator();
+      const s = this.sort();
+      if (p) this.dataSource.paginator = p;
+      if (s) this.dataSource.sort = s;
+    });
+  }
+
+  applyColumnFilter(column: string, value: any) {
+    const filterValue = String(value ?? '')
+      .trim()
+      .toLowerCase();
+    this.columnFilterMap.set(column, filterValue);
+
+    // Setting a new filter string triggers the filterPredicate
+    // We use a timestamp to ensure the value is always different, forcing a re-filter
+    this.dataSource.filter = `filter-${Date.now()}`;
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onRowClick(data: T, key: string, event: MouseEvent) {
+    this.cellClicked.emit({ data, key, event });
+  }
+
+  getSafeHtml(col: DataGridColDef<T>, element: T): SafeHtml {
+    const html = col.cellRenderer ? col.cellRenderer(element) : '';
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 }
