@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Launchpads } from '../../services/spacex/launchpads';
 import { Launches } from '../../services/spacex/launches';
 import { ApiStatus } from '../../model/spacex/apiStatus.model';
+import { APP_CONFIG } from '../../config';
 
 @Component({
   selector: 'app-system-status',
@@ -78,7 +79,7 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
         <!-- Node Health Card -->
         <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
           <div class="flex items-center justify-between">
-            <h3 class="font-display text-xl font-semibold">Telemetry Node</h3>
+            <h3 class="font-display text-xl font-semibold">{{ config.serviceName }}s</h3>
             <span
               class="rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-bold tracking-widest text-emerald-500 uppercase"
             >
@@ -91,7 +92,7 @@ import { ApiStatus } from '../../model/spacex/apiStatus.model';
           </p>
           <div class="text-mission-ink/40 flex items-center gap-2 font-mono text-xs">
             <mat-icon class="h-auto w-auto text-[14px]">memory</mat-icon>
-            VERSION: 3.1.0-STABLE
+            {{ config.version }}-STABLE
           </div>
         </div>
       </div>
@@ -152,6 +153,7 @@ export class SystemStatus implements OnInit {
   protected ApiStatus = ApiStatus;
   protected launchpadService = inject(Launchpads);
   protected launchesService = inject(Launches);
+  protected config = APP_CONFIG;
 
   ngOnInit() {
     // Refresh status on load
