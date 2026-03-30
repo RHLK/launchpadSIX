@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { Launchpads } from '../../services/spacex/launchpads';
 import { Launches } from '../../services/spacex/launches';
 import { ApiStatus } from '../../model/spacex/apiStatus.model';
+
+import { Health, HealthStatus } from '../../services/health/health';
 import { APP_CONFIG } from '../../config';
 
 @Component({
@@ -22,6 +24,41 @@ import { APP_CONFIG } from '../../config';
       </header>
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- Internal Health Endpoint Card -->
+        <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="font-display text-xl font-semibold">Internal Health API</h3>
+            <span
+              [class]="
+                'rounded-full px-3 py-1 text-[10px] font-bold tracking-widest uppercase ' +
+                (health.status() === HealthStatus.UP
+                  ? 'bg-emerald-500/10 text-emerald-500'
+                  : health.status() === HealthStatus.DOWN
+                    ? 'bg-rose-500/10 text-rose-500'
+                    : 'bg-amber-500/10 text-amber-500')
+              "
+            >
+              {{ health.status() }}
+            </span>
+          </div>
+          <p class="text-mission-ink/60 text-sm">
+            Internal service availability and uptime monitoring. Checks the core application backend
+            responsiveness.
+          </p>
+          <div class="text-mission-ink/40 flex flex-col gap-1 font-mono text-xs">
+            <div class="flex items-center gap-2">
+              <mat-icon class="h-auto w-auto text-[14px]">api</mat-icon>
+              ENDPOINT: /health
+            </div>
+            @if (health.lastResponse(); as res) {
+              <div class="flex items-center gap-2">
+                <mat-icon class="h-auto w-auto text-[14px]">schedule</mat-icon>
+                UPTIME: {{ (res.uptime / 60).toFixed(2) }}m
+              </div>
+            }
+          </div>
+        </div>
+        s
         <!-- Launchpads API Health Card -->
         <div class="bg-mission-ink/5 border-mission-line flex flex-col gap-4 rounded-xl border p-6">
           <div class="flex items-center justify-between">
@@ -150,13 +187,18 @@ import { APP_CONFIG } from '../../config';
   ],
 })
 export class SystemStatus implements OnInit {
-  protected ApiStatus = ApiStatus;
+  protected health = inject(Health);
   protected launchpadService = inject(Launchpads);
   protected launchesService = inject(Launches);
+
+  protected ApiStatus = ApiStatus;
+  protected HealthStatus = HealthStatus;
   protected config = APP_CONFIG;
 
   ngOnInit() {
     // Refresh status on load
+    // Refresh status on load
+    this.health.checkHealth().subscribe();
     this.launchpadService.getLaunchpads().subscribe();
     this.launchesService.getLaunches().subscribe();
   }

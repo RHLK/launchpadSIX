@@ -1,0 +1,5 @@
+{
+  "name": "SpaceX Launchpad Explorer",
+  "description": "A technical dashboard for exploring SpaceX launchpads, featuring real-time data, advanced filtering, and mission control aesthetics.",
+  "requestFramePermissions": []
+}
