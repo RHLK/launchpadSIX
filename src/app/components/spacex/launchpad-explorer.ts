@@ -163,6 +163,7 @@ export class LaunchpadExplorer {
 
   constructor() {
     console.log('LaunchpadExplorer: loaded...');
+    this.launchpadService.getLaunchpads().subscribe();
   }
 
   /**

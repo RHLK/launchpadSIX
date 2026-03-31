@@ -89,7 +89,7 @@ export class Launches {
    * @param launches The array of raw launch objects.
    * @returns The array of mapped launch objects.
    */
-  private mapLaunches(launches: any[]): Launch[] {
+  private mapLaunches(launches: Partial<Launch>[]): Launch[] {
     return launches.map((l) => ({
       ...l,
       status: l.upcoming ? 'Upcoming' : l.success ? 'Success' : 'Failure',
