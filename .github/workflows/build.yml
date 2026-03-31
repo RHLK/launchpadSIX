@@ -26,6 +26,8 @@ jobs:
         run: |
           # Replace the SpaceX API URL in environment.ts if needed
            sed -i "s|'https://api.spacexdata.com/latest'|'${{ secrets.SPACEX_API_URL }}'|g" src/environment/environment.ts
+          # Replace the Artemis API URL in environment.ts if needed
+           sed -i "s|'https://fdo.rocketlaunch.live/json'|'${{ secrets.ARTEMIS_API_URL }}'|g" src/environment/environment.ts
 
       - name: Lint
         run: npm run lint
