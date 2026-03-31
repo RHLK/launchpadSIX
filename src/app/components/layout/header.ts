@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Launch } from '../artemis/launch';
+import { ArtemisLaunch } from '../../services/artemis/artemis-launch';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule],
+  imports: [MatIconModule, Launch],
   template: `
     <header class="mission-header">
       <div class="mission-header-container">
@@ -19,11 +21,12 @@ import { MatIconModule } from '@angular/material/icon';
 
         <nav class="mission-nav">
           <a href="#" class="mission-nav-link mission-nav-link-active">Launchpads</a>
-          <a href="#" class="mission-nav-link">Missions</a>
-          <a href="#" class="mission-nav-link">Rockets</a>
+          <app-launch />
         </nav>
       </div>
     </header>
   `,
 })
-export class Header {}
+export class Header {
+  artemisLaunchService = inject(ArtemisLaunch);
+}

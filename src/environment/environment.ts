@@ -1,5 +1,6 @@
 export const environment = {
     production: false,
-    spacexApiUrl: 'https://api.spacexdata.com/latest',
+    spacexApiUrl: 'SPACEX_API_URL',
+    artemisApiUrl: 'ROcketLaunch_LIVE_API_URL',
   };
   

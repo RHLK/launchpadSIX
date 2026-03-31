@@ -6,10 +6,10 @@ The app is designed as a technical dashboard for exploring SpaceX launch facilit
 
 ## Functionalities
 
-- **Real-time Data**: Fetches the latest launchpad information from the SpaceX API.
-- **Advanced Grid**: Data displayed by Ag-Grid.
+- **Real-time Data**: Fetches the latest launchpad information from the SpaceX API. And latest Artemis II Launching
+- **Advanced Grid**: Data displayed by Material-Table.
 - **Filtering**: Quick search by name, region, or locality.
-- **Pagination**: Configurable records per page (default: 5).
+- **Pagination**: Configurable records per page .
 - **Mission Control UI**: A sleek, dashboard interface.
 - **Responsive Design**: Optimized for both desktop & mobile.
 
@@ -25,7 +25,7 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    npm install
    ```
 2. **Envionment**:
-   copy environment.example.ts and rename to environment.ts (verify the information: api urls(spaceX,...))
+   copy environment.example.ts and rename to environment.ts (verify the information: api urls(spaceX, fdo.rocketlaunch.live...))
    **Map your GitHub Secrets to environment variables for this step**
 
 3. **Run Development Server**:
