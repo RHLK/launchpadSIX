@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "cross-env ng serve --host=0.0.0.0 ${DISABLE_HMR:+--live-reload=false}",
+    "dev": "cross-env ng serve --port=3000 --host=0.0.0.0 ${DISABLE_HMR:+--live-reload=false}",
     "build": "ng build",
     "production": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
