@@ -1,6 +1,6 @@
 # SpaceX Launchpad Explorer
 
-A technical dashboard for exploring SpaceX launch facilities and tracking the Artemis mission, built with Angular, Ag-Grid, and Tailwind CSS.
+A technical dashboard for exploring SpaceX launch facilities and tracking the Artemis mission, built with Angular, @angular Material table, and Tailwind CSS.
 
 ## Features
 
