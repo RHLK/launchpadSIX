@@ -71,6 +71,14 @@ import { formatCountdown, formatToZurichTime } from '../../utils/date-utils';
                 </div>
                 <div class="flex flex-col">
                   <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase"
+                    >Location</span
+                  >
+                  <span class="text-mission-bg font-mono text-xs">{{
+                    artemis.pad.location.name
+                  }}</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase"
                     >Date (UTC)</span
                   >
                   <span class="text-mission-bg font-mono text-xs">{{ artemis.date_str }}</span>
@@ -81,14 +89,6 @@ import { formatCountdown, formatToZurichTime } from '../../utils/date-utils';
                   >
                   <span class="text-mission-bg font-mono text-xs">{{
                     formatToZurichTime(artemis.win_open)
-                  }}</span>
-                </div>
-                <div class="flex flex-col">
-                  <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase"
-                    >Location</span
-                  >
-                  <span class="text-mission-bg font-mono text-xs">{{
-                    artemis.pad.location.name
                   }}</span>
                 </div>
               </div>
