@@ -22,13 +22,17 @@ export class Launches {
   // Launches spacex api status data.
   apiStatus = signal<ApiStatus>(ApiStatus.CHECKING);
   /**
-   * Computed signals for currently loaded launches (filtered by query).  
-   *  * Filter non upcoming launches for the summary stats, but keep all launches in the main list for display and filtering purposes.
+   * Computed signals for currently loaded launches (filtered by query).
+   * Filter non upcoming launches for the summary stats, but keep all launches in the main list for display and filtering purposes.
    */
   historicalLaunches = computed(() => this.launches().filter((l) => l.upcoming === false));
   selectedLaunchCount = computed(() => this.historicalLaunches().length);
-  selectedSuccessCount = computed(() => this.historicalLaunches().filter((l) => l.success === true).length);
-  selectedFailureCount = computed(() => this.historicalLaunches().filter((l) => l.success === false).length);
+  selectedSuccessCount = computed(
+    () => this.historicalLaunches().filter((l) => l.success === true).length,
+  );
+  selectedFailureCount = computed(
+    () => this.historicalLaunches().filter((l) => l.success === false).length,
+  );
   selectedUpcomingCount = computed(() => this.launches().filter((l) => l.upcoming === true).length);
 
   selectedSuccessRate = computed(() => {

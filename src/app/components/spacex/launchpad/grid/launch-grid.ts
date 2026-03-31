@@ -34,7 +34,6 @@ export class LaunchGrid {
    */
   launchColDefs = computed<DataGridColDef<Launch>[]>(() => {
     const data = this.launchesService.launches();
-      console.log(data.filter(s => s.status === 'Upcoming'));
     // Extract unique statuses for filter options
     const outcomes = Array.from(new Set(data.map((d) => d.status)))
       .filter((s) => s !== undefined && s !== null)

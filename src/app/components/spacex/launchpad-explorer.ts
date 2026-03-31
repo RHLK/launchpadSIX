@@ -118,7 +118,7 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
                   launchesService.selectedFailureCount()
                 }}</span>
               </div>
-              
+
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold tracking-tighter text-blue-400/60 uppercase"
                   >Rate</span
@@ -128,10 +128,10 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
                 >
               </div>
               <div class="flex flex-col">
-                <span class="text-[10px] font-bold tracking-tighter text-grey-400/60 uppercase"
+                <span class="text-grey-400/60 text-[10px] font-bold tracking-tighter uppercase"
                   >Upcoming</span
                 >
-                <span class="font-mono text-sm font-bold text-grey-400">{{
+                <span class="text-grey-400 font-mono text-sm font-bold">{{
                   launchesService.selectedUpcomingCount()
                 }}</span>
               </div>
