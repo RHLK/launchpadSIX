@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    spacexApiUrl: 'https://api.spacexdata.com/latest',
-    artemisApiUrl: 'https://fdo.rocketlaunch.live/json',
+    spacexApiUrl: 'SPACEX_API_URL',
+    artemisApiUrl: 'ARTEMIS_API_URL',
   };
   

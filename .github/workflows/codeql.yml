@@ -89,12 +89,15 @@ jobs:
         env:
           # Map your GitHub Secrets to environment variables for this step
           SPACEX_API_URL: ${{ secrets.SPACEX_API_URL }}
+          ARTEMIS_API_URL: ${{ secrets.ARTEMIS_API_URL }}
         run: |
           npm install
 
           # Inject the SpaceX API URL into the environment configuration
           # We use '|' as a delimiter because the URL contains slashes '/'
           sed -i "s|'https://api.spacexdata.com/latest'|'$SPACEX_API_URL'|g" src/environment/environment.ts
+          # Replace the Artemis API URL in environment.ts if needed
+           sed -i "s|'https://fdo.rocketlaunch.live/json'|'$ARTEMIS_API_URL'|g" src/environment/environment.ts
           npm run production
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
