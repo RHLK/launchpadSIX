@@ -5,6 +5,8 @@
     <title>SpaceX Launchpad Explorer</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Content Security Policy (Used for local development without server.ts) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.run.app https://api.spacexdata.com https://fdo.rocketlaunch.live; worker-src 'self' blob:;" />
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   </head>
   <body>
