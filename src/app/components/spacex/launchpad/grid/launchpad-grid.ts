@@ -65,10 +65,9 @@ export class LaunchpadGrid {
    * Material Table Column Definitions for Launchpads
    */
   colDefs = computed<DataGridColDef<Launchpad>[]>(() => {
-
     const data = this.launchpadService.launchpads();
     const template = this.launchesTemplate();
-    
+
     if (!template) return [];
 
     // Extract unique regions from data
