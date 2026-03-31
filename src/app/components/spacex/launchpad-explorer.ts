@@ -95,10 +95,10 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
               class="flex items-center gap-6 rounded-lg border border-white/5 bg-white/5 px-4 py-2"
             >
               <div class="flex flex-col">
-                <span class="text-mission-ink/40 text-[10px] font-bold tracking-tighter uppercase"
+                <span class="text-[10px] font-bold tracking-tighter text-blue-400/60 uppercase"
                   >Total</span
                 >
-                <span class="font-mono text-sm font-bold">{{
+                <span class="font-mono text-sm font-bold text-blue-400">{{
                   launchesService.selectedLaunchCount()
                 }}</span>
               </div>
@@ -118,6 +118,7 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
                   launchesService.selectedFailureCount()
                 }}</span>
               </div>
+
               <div class="flex flex-col">
                 <span class="text-[10px] font-bold tracking-tighter text-blue-400/60 uppercase"
                   >Rate</span
@@ -125,6 +126,14 @@ import { LaunchGrid } from './launchpad/grid/launch-grid';
                 <span class="font-mono text-sm font-bold text-blue-400"
                   >{{ launchesService.selectedSuccessRate() }}%</span
                 >
+              </div>
+              <div class="flex flex-col">
+                <span class="text-grey-400/60 text-[10px] font-bold tracking-tighter uppercase"
+                  >Upcoming</span
+                >
+                <span class="text-grey-400 font-mono text-sm font-bold">{{
+                  launchesService.selectedUpcomingCount()
+                }}</span>
               </div>
               <button
                 mat-icon-button
@@ -154,6 +163,7 @@ export class LaunchpadExplorer {
 
   constructor() {
     console.log('LaunchpadExplorer: loaded...');
+    this.launchpadService.getLaunchpads().subscribe();
   }
 
   /**

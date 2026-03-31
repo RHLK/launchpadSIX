@@ -9,7 +9,6 @@ import { TestBed } from '@angular/core/testing';
 
 describe('SpaceX Launchpad and Launches Client Service', () => {
   let launchpadService: Launchpads;
-  let launchesService: Launches;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let spacexClientMock: { get: any; post: any };
 
@@ -24,7 +23,6 @@ describe('SpaceX Launchpad and Launches Client Service', () => {
     });
 
     launchpadService = TestBed.inject(Launchpads);
-    launchesService = TestBed.inject(Launches);
   });
 
   it('should fetch launchpads from the correct URL', () => {

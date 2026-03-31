@@ -23,10 +23,18 @@ export class Launches {
   apiStatus = signal<ApiStatus>(ApiStatus.CHECKING);
   /**
    * Computed signals for currently loaded launches (filtered by query).
+   * Filter non upcoming launches for the summary stats, but keep all launches in the main list for display and filtering purposes.
    */
-  selectedLaunchCount = computed(() => this.launches().length);
-  selectedSuccessCount = computed(() => this.launches().filter((l) => l.success === true).length);
-  selectedFailureCount = computed(() => this.launches().filter((l) => l.success === false).length);
+  historicalLaunches = computed(() => this.launches().filter((l) => l.upcoming === false));
+  selectedLaunchCount = computed(() => this.historicalLaunches().length);
+  selectedSuccessCount = computed(
+    () => this.historicalLaunches().filter((l) => l.success === true).length,
+  );
+  selectedFailureCount = computed(
+    () => this.historicalLaunches().filter((l) => l.success === false).length,
+  );
+  selectedUpcomingCount = computed(() => this.launches().filter((l) => l.upcoming === true).length);
+
   selectedSuccessRate = computed(() => {
     const total = this.selectedLaunchCount();
     const success = this.selectedSuccessCount();
@@ -43,7 +51,7 @@ export class Launches {
     return this.spaceXClient.get<Launch[]>('/launches').pipe(
       tap({
         next: (data) => {
-          this.launches.set(data);
+          this.launches.set(this.mapLaunches(data));
           this.loadingLaunches.set(false);
           this.apiStatus.set(ApiStatus.ONLINE);
         },
@@ -70,9 +78,21 @@ export class Launches {
       .post<QueryResponse<Launch>>('/launches/query', { query, options })
       .pipe(
         tap((response) => {
-          this.launches.set(response.docs);
+          this.launches.set(this.mapLaunches(response.docs));
           this.loadingLaunches.set(false);
         }),
       );
+  }
+
+  /**
+   * Maps an array of raw launch objects to include a status field.
+   * @param launches The array of raw launch objects.
+   * @returns The array of mapped launch objects.
+   */
+  private mapLaunches(launches: Partial<Launch>[]): Launch[] {
+    return launches.map((l) => ({
+      ...l,
+      status: l.upcoming ? 'Upcoming' : l.success ? 'Success' : 'Failure',
+    })) as Launch[];
   }
 }

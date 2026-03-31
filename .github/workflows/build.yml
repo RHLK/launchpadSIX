@@ -27,6 +27,13 @@ jobs:
           # Replace the SpaceX API URL in environment.ts if needed
            sed -i "s|'https://api.spacexdata.com/latest'|'${{ secrets.SPACEX_API_URL }}'|g" src/environment/environment.ts
 
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Test
+        run: npm test -- --watch=false
+
       - name: Build
         run: npm run production
 
