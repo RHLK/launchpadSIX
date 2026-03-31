@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DataGrid, DataGridColDef } from '../../../grid/data-grid';
 import { Launches } from '../../../../services/spacex/launches';
 import { Launch } from '../../../../model/spacex/launch.model';
+import { formatLocalizedDate, isPast } from '../../../../utils/date-utils';
 
 /**
  * SpaceX Launchpad Explorer Component
@@ -33,11 +34,11 @@ export class LaunchGrid {
    */
   launchColDefs = computed<DataGridColDef<Launch>[]>(() => {
     const data = this.launchesService.launches();
-
-    // Extract unique outcomes (success/failure)
-    const outcomes = Array.from(new Set(data.map((d) => d.success)))
+      console.log(data.filter(s => s.status === 'Upcoming'));
+    // Extract unique statuses for filter options
+    const outcomes = Array.from(new Set(data.map((d) => d.status)))
       .filter((s) => s !== undefined && s !== null)
-      .map((s) => ({ label: s ? 'Success' : 'Failure', value: String(s) }));
+      .map((s) => ({ label: s, value: s }));
 
     return [
       {
@@ -49,23 +50,29 @@ export class LaunchGrid {
         key: 'name',
         header: 'Mission Name',
         cellRenderer: (data: Launch) => `
-        <div class="flex items-center gap-3 py-1">
-          ${data.links.patch.small ? `<img src="${data.links.patch.small}" class="w-6 h-6 object-contain" referrerpolicy="no-referrer">` : ''}
-          <div class="flex flex-col">
-            <span class="font-bold text-mission-ink">${data.name}</span>
-            <span class="text-[10px] text-mission-ink/40 font-mono">${new Date(data.date_utc || '').toLocaleDateString()}</span>
-          </div>
+        <div class="flex flex-col">
+        ${
+          data.links.wikipedia
+            ? `<a href="${data.links.wikipedia}" target="_blank" rel="noopener noreferrer" class="font-bold text-mission-ink hover:text-mission-accent transition-colors underline decoration-mission-accent/30 underline-offset-4">${data.name}</a>`
+            : `<span class="font-bold text-mission-ink">${data.name}</span>`
+        }
+        ${
+          data.status === 'Upcoming' && isPast(data.date_utc)
+            ? ''
+            : `<span class="text-[10px] text-mission-ink/40 font-mono">${formatLocalizedDate(data.date_utc)}</span>`
+        }
         </div>
       `,
       },
       {
-        key: 'success',
+        key: 'status',
         header: 'Outcome',
         filterOptions: outcomes,
         cellRenderer: (data: Launch) => {
-          const color = data.success ? 'text-emerald-500' : 'text-rose-500';
-          const label = data.success ? 'Success' : 'Failure';
-          return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${label}</span>`;
+          let color = 'text-grey-400';
+          if (data.status === 'Success') color = 'text-emerald-500';
+          if (data.status === 'Failure') color = 'text-rose-500';
+          return `<span class="${color} uppercase text-[10px] font-bold tracking-widest">${data.status}</span>`;
         },
       },
       {
