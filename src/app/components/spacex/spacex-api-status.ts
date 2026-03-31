@@ -92,7 +92,7 @@ import { APP_CONFIG } from '../../config';
           </p>
           <div class="text-mission-ink/40 flex items-center gap-2 font-mono text-xs">
             <mat-icon class="h-auto w-auto text-[14px]">memory</mat-icon>
-            {{ config.version }}-STABLE
+            {{ config.version }}
           </div>
         </div>
       </div>

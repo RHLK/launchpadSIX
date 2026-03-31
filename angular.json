@@ -18,16 +18,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "security": {
-              "allowedHosts": [
-                "example.com",
-                "fantastic-space-carnival-v6p4r6wjqjwcx664-4200.app.github.dev",
-                "localhost:3000",
-                "localhost:4200",
-                "127.0.0.1",
-                "0.0.0.0"
-              ]
-            },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -78,14 +68,7 @@
               "buildTarget": "app:build:development"
             },
             "options": {
-              "allowedHosts": [
-                "example.com",
-                "fantastic-space-carnival-v6p4r6wjqjwcx664-4200.app.github.dev",
-                "localhost:3000",
-                "localhost:4200",
-                "127.0.0.1",
-                "0.0.0.0"
-              ]
+              "allowedHosts": ["all"]
             }
           },
           "defaultConfiguration": "development"

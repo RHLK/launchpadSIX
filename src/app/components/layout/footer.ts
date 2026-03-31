@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Launchpads } from '../../services/spacex/launchpads';
 import { ApiStatus } from '../../model/spacex/apiStatus.model';
 import { RouterModule } from '@angular/router';
+import { APP_CONFIG } from '../../config';
 
 @Component({
   selector: 'app-footer',
@@ -10,7 +11,7 @@ import { RouterModule } from '@angular/router';
     <footer class="mission-footer">
       <div class="mission-footer-container">
         <div class="mission-footer-bottom">
-          <p class="mission-footer-copy">© 2026 SpaceX Mission Control</p>
+          <p class="mission-footer-copy">© 2026 SpaceX Mission Control {{ config.version }}</p>
           <div class="mission-footer-links">
             <a
               href="https://github.com/r-spacex/SpaceX-API"
@@ -40,4 +41,5 @@ import { RouterModule } from '@angular/router';
 export class Footer {
   protected launchpadsService = inject(Launchpads);
   protected ApiStatus = ApiStatus;
+  protected config = APP_CONFIG;
 }

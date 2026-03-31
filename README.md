@@ -1,17 +1,16 @@
-# launchpadSIX
+# SpaceX Launchpad Explorer
 
-Mission Control (SpaceX Telemetry System)
-Small web Angular application that displays information about SpaceX launchpads and its missions.
-The app is designed as a technical dashboard for exploring SpaceX launch facilities. "Telemetry" refers to the automatic recording and transmission of data from remote or inaccessible sources to an IT system in a different location for monitoring and analysis—this app pulls real-time data from the SpaceX API('https://api.spacexdata.com/latest').
+A technical dashboard for exploring SpaceX launch facilities and tracking the Artemis mission, built with Angular, Ag-Grid, and Tailwind CSS.
 
-## Functionalities
+## Features
 
-- **Real-time Data**: Fetches the latest launchpad information from the SpaceX API. And latest Artemis II Launching
-- **Advanced Grid**: Data displayed by Material-Table.
-- **Filtering**: Quick search by name, region, or locality.
-- **Pagination**: Configurable records per page .
-- **Mission Control UI**: A sleek, dashboard interface.
-- **Responsive Design**: Optimized for both desktop & mobile.
+- **Artemis Mission Tracking**: Real-time countdown to the next upcoming Artemis mission (Artemis II, III, etc.) with dynamic mission patches, Wikipedia links, and Zurich timezone support.
+- **Launchpad Explorer**: Fetches and displays the latest launchpad information from the SpaceX API with advanced data grid features.
+- **Data Resiliency**: Intelligent fallback logic for mission descriptions and countdown timers using multiple data points (win_open, t0, mission descriptions).
+- **Advanced Material Table Grid**: Powered by @angular Material table, offers filtering, and pagination.
+- **Mission Control UI**: A sleek, dark-themed interface inspired by aerospace telemetry systems.
+- **Responsive Design**: Optimized for both desktop and mobile viewing with a modern, technical aesthetic.
+- **Modular Architecture**: Clean separation of concerns with dedicated components for mission tracking and data exploration.
 
 ## Enviroment requirement
 
@@ -34,7 +33,7 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
    npm run dev
    ```
 
-   The application will be available at `http://localhost:4200`.
+   The application will be available at `http://localhost:3000`.
 
 4. **Build for Production**:
    ```bash
@@ -55,10 +54,9 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
 
 ## Testing
 
-1. **Run Unit Tests**:
-   ```bash
-   npm test
-   ```
+```bash
+npm test
+```
 
 ## Technical Stack
 
@@ -66,3 +64,5 @@ use n to swtich between versions https://codeforgeek.com/update-node-using-n/
 - **Grid**: Material table
 - **Styling**: Tailwind CSS 4.0
 - **Icons**: Material Icons
+- **Fonts**: Space Grotesk, Inter, JetBrains Mono
+- **Utilities**: Custom date utilities for countdowns and timezone conversions (Zurich)
