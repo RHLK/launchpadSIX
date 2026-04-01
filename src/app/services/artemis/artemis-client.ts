@@ -15,8 +15,8 @@ export class ArtemisClient {
   private baseUrl = environment.artemisApiUrl;
 
   /**
-   * Performs a GET request to the SpaceX API.
-   * @param path The API endpoint path (e.g., '/launchpads').
+   * Performs a GET request to the Artemis API.
+   * @param path The API endpoint path (e.g., '/launches/next/5').
    * @returns An Observable of the response body.
    */
   get<T>(path: string): Observable<T> {
@@ -25,14 +25,4 @@ export class ArtemisClient {
     return this.http.get<T>(`${this.baseUrl}${normalizedPath}`);
   }
 
-  /**
-   * Performs a POST request to the SpaceX API.
-   * @param path The API endpoint path (e.g., '/launches/query').
-   * @param body The request body.
-   * @returns An Observable of the response body.
-   */
-  post<T>(path: string, body: Record<string, unknown>): Observable<T> {
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-    return this.http.post<T>(`${this.baseUrl}${normalizedPath}`, body);
-  }
 }

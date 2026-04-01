@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { ArtemisClient } from '../spacex/artemis-client';
+import { ArtemisClient } from './artemis-client';
 import { RocketLaunch } from '../../model/artemis/rocket-launch.model';
 
 /**
