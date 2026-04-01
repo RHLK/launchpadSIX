@@ -84,9 +84,7 @@ import { formatCountdown, formatToLocalTime } from '../../utils/date-utils';
                   <span class="text-mission-bg font-mono text-xs">{{ artemis.date_str }}</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase"
-                    >Date</span
-                  >
+                  <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase">Date</span>
                   <span class="text-mission-bg font-mono text-xs">{{
                     formatToLocalTime(artemis.win_open)
                   }}</span>
