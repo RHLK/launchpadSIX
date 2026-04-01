@@ -4,7 +4,7 @@ A technical dashboard for exploring SpaceX launch facilities and tracking the Ar
 
 ## Features
 
-- **Artemis Mission Tracking**: Real-time countdown to the next upcoming Artemis mission (Artemis II, III, etc.) with dynamic mission patches, Wikipedia links, and Zurich timezone support.
+- **Artemis Mission Tracking**: Real-time countdown to the next upcoming Artemis mission (Artemis II, III, etc.) with dynamic mission patches, Wikipedia links, and Locale timezone support.
 - **Launchpad Explorer**: Fetches and displays the latest launchpad information from the SpaceX API with advanced data grid features.
 - **Data Resiliency**: Intelligent fallback logic for mission descriptions and countdown timers using multiple data points (win_open, t0, mission descriptions).
 - **Advanced Material Table Grid**: Powered by @angular Material table, offers filtering, and pagination.
@@ -65,4 +65,4 @@ npm test
 - **Styling**: Tailwind CSS 4.0
 - **Icons**: Material Icons
 - **Fonts**: Space Grotesk, Inter, JetBrains Mono
-- **Utilities**: Custom date utilities for countdowns and timezone conversions (Zurich)
+- **Utilities**: Custom date utilities for countdowns and timezone conversions (Locale)

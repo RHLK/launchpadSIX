@@ -57,20 +57,19 @@ export function formatCountdown(
 }
 
 /**
- * Formats a UTC date string into a localized string for Zurich time (CET/CEST).
+ * Formats a UTC date string into a localized string for Local time .
  * @param dateUtc The UTC date string to format.
- * @returns The formatted date string in Zurich time.
+ * @returns The formatted date string in Local time.
  */
-export function formatToZurichTime(dateUtc: string | null | undefined): string {
+export function formatToLocalTime(dateUtc: string | null | undefined): string {
   if (!dateUtc) return '';
   return (
-    new Date(dateUtc).toLocaleString('de-CH', {
-      timeZone: 'Europe/Zurich',
+    new Date(dateUtc).toLocaleTimeString(undefined, {
       month: 'short',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
-    }) + ' Zurich'
+    }) + ' Local'
   );
 }

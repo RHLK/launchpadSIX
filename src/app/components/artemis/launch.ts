@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ArtemisLaunch } from '../../services/artemis/artemis-launch';
-import { formatCountdown, formatToZurichTime } from '../../utils/date-utils';
+import { formatCountdown, formatToLocalTime } from '../../utils/date-utils';
 
 @Component({
   selector: 'app-launch',
@@ -85,10 +85,10 @@ import { formatCountdown, formatToZurichTime } from '../../utils/date-utils';
                 </div>
                 <div class="flex flex-col">
                   <span class="text-mission-bg/40 text-[9px] tracking-tighter uppercase"
-                    >Date (Zurich)</span
+                    >Date</span
                   >
                   <span class="text-mission-bg font-mono text-xs">{{
-                    formatToZurichTime(artemis.win_open)
+                    formatToLocalTime(artemis.win_open)
                   }}</span>
                 </div>
               </div>
@@ -110,7 +110,7 @@ export class Launch implements OnDestroy {
   artemisLaunchService = inject(ArtemisLaunch);
   currentTime = signal(Date.now());
   showArtemisInfo = signal(false);
-  formatToZurichTime = formatToZurichTime;
+  formatToLocalTime = formatToLocalTime;
   private timer: any;
 
   constructor() {
